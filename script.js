@@ -298,6 +298,8 @@ function show_users() {
             let response = JSON.parse(httpRequest.responseText);
             if (response.status == false) {
                 displayError(response.statusMsg);
+            } else if (!response.users_array) {
+                displayError("<p class='info'>There are currently no other users signed up, sorry :(</p>")
             } else {
                 var profile_list = document.getElementById("profile_list");
                 for (var key in response.users_array) {
