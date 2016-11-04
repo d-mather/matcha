@@ -133,38 +133,49 @@ try {
 
 </section>
 
+
 <footer id="footer">
 
-				<div style="float: left; width:">
-					<form method="post" id="delAccForm" enctype="application/x-www-form-urlencoded">
-						Delete Account:
-						<input type="password" style="background-color: Yellow;" id="delAccPwd" placeholder="password">
-						<input id="delacc" type="submit" style="background-color: #FE0001;" name="delaccount" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account?')">
-					</form>
-				</div>
+ <button onclick="document.getElementById('id01').style.display='block'"
+ class="w3-btn">more options</button>
+  <div id="id01" class="w3-modal" style="display: none">
+   <div class="w3-modal-content">
 
-				<div style="float: left;">
-					<form id="modifyForm" method="post" enctype="application/x-www-form-urlencoded">
-          	Change Password:
-          	<input type="password" style="background-color: #015a5b;" id="oldpw" name="oldpwd" placeholder="old password">
-          	<input type="password" style="background-color: #073d00;" id="newpw" name="newpwd" placeholder="new password">
-          	<input type="submit" style="background-color: #FE0001;" name="submit" value="Change Password">
-        	</form>
-				</div>
+     <div class="w3-container">
+       <button onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn">Close tray</button>
+       <div>
 
-        <a class="links" <?php if ($meta == 2): ?> href="home.php"<?php endif ?>>Home</a>
+                <div style="float: left; width: 400px;">
+                    <form method="post" id="delAccForm" enctype="application/x-www-form-urlencoded">
+                        Delete Account:
+                        <input type="password" style="background-color: Yellow;" id="delAccPwd" placeholder="password">
+                        <input id="delacc" type="submit" style="background-color: #FE0001;" name="delaccount" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account?')">
+                    </form>
+                </div>
+                <div style="float: left; width: 550px;">
+                    <form id="modifyForm" method="post" enctype="application/x-www-form-urlencoded">
+                      Change Password:
+                      <input type="password" style="background-color: #015a5b;" id="oldpw" name="oldpwd" placeholder="old password">
+                      <input type="password" style="background-color: #073d00;" id="newpw" name="newpwd" placeholder="new password">
+                      <input type="submit" style="background-color: #FE0001;" name="submit" value="Change Password">
+                    </form>
+                </div>
 
-				<div style="float: right;">
-          <form method="get" action="logout.php">
-  					<?php session_start(); echo $_SESSION['logged_on_user'].':'; ?>
-            <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
-				  </form>
+                <a class="links" <?php if ($meta == 2): ?> href="home.php"<?php endif ?>>Home</a>
 
-          <p class="cright">
-  						<a class="cright" href="https://za.linkedin.com/in/dillon-mather-a0061b128">&#169; Dillon Mather | Matcha | 2016</a>
-  				</p>
+                <div style="float: right; width: 170px;">
+                  <form method="get" action="logout.php">
+                     <?php session_start(); echo $_SESSION['logged_on_user'].':'; ?>
+                     <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
+                  </form>
+                  <p class="cright">
+                         <a class="cright" href="https://za.linkedin.com/in/dillon-mather-a0061b128">&#169; Dillon Mather | Matcha | 2016</a>
+                 </p>
+       </div>
+     </div>
 
-        </div>
+ </div>
+</div>
 
 </footer>
 
