@@ -207,3 +207,15 @@ progress[value]::before {
 .image-upload-fields {
     width: 500px;
 }
+
+.w3-btn {
+    background-color: #e8d1d0;
+    color: green;
+    border-radius: 20px;
+}
+
+.w3-closebtn {
+    background-color: #e8d1d0;
+    color: red;
+    border-radius: 20px;
+}

@@ -21,7 +21,7 @@ include 'database.php';
       $sql = 'CREATE TABLE IF NOT EXISTS pictures (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, username varchar(30) NOT NULL, pic_path_and_name varchar(28), pic_number INT);';
       $conn->exec($sql);
       echo "pictures table created\n";
-      $sql = 'CREATE TABLE IF NOT EXISTS public (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) NOT NULL UNIQUE, likes INT, who_liked varchar(10000), views INT, who_viewed varchar(10000));';
+      $sql = 'CREATE TABLE IF NOT EXISTS public (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) NOT NULL UNIQUE, likes INT NOT NULL DEFAULT "0", who_liked varchar(10000), views INT NOT NULL DEFAULT "0", who_viewed varchar(10000));';
       $conn->exec($sql);
       echo "public table created\n";
 

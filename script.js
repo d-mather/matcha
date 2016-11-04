@@ -286,7 +286,7 @@ function get_coords() {
         }
     }
 }
-
+/*
 // Show users at home
 function show_users() {
     var httpRequest = new XMLHttpRequest();
@@ -298,6 +298,8 @@ function show_users() {
             let response = JSON.parse(httpRequest.responseText);
             if (response.status == false) {
                 displayError(response.statusMsg);
+            } else if (response.users_array.length == 0) {
+                displayError("<br /><p class='info'>There are currently no other users signed up, sorry :(</p><br /><br />")
             } else {
                 var profile_list = document.getElementById("profile_list");
                 for (var key in response.users_array) {
@@ -359,6 +361,11 @@ function show_users() {
                     text.style.fontWeight = "bold";
                     mainD.appendChild(text);
 
+                    var moretext = document.createElement("div");
+                    moretext.innerHTML = "likes: " + response.users_array[key]['likes'] + " | views: " + response.users_array[key]['views'];
+                    moretext.style.color = "black";
+                    mainD.appendChild(moretext);
+
 
 
 
@@ -372,23 +379,8 @@ function show_users() {
     httpRequest.open("POST", "get_profiles.php", true);
     httpRequest.send();
 
-    /*
-        ajax_post("get_profiles.php", data, function(httpRequest) {
-            let response = JSON.parse(httpRequest.responseText);
-            if (response.status == false) {
-                displayError(response.statusMsg);
-            } else {
-                var profile_list = document.getElementById("profile_list");
-
-                console.log(response.users_array);
-
-
-
-
-            }
-        });*/
 }
-
+*/
 // Add class to element
 function addClass(el, className) {
     if (el.classList && !el.classList.contains(className)) {
