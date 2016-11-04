@@ -1,3 +1,13 @@
+function view_user() {
+    var tmp = String("you pressed view");
+    console.log(tmp);
+}
+
+function like_user() {
+    var tmp = String("you pressed like");
+    console.log(tmp);
+}
+
 // Show users at home
 var httpRequest = new XMLHttpRequest();
 httpRequest.addEventListener("error", function(event) {
@@ -33,6 +43,7 @@ httpRequest.addEventListener("readystatechange", function() {
 
                 var view_btn = document.createElement("button");
                 view_btn.innerHTML = "view";
+                view_btn.id = response.users_array[key]['username'] + "_view_btn";
                 view_btn.style.height = "70px";
                 view_btn.style.width = "130px";
                 view_btn.style.float = "right";
@@ -45,10 +56,15 @@ httpRequest.addEventListener("readystatechange", function() {
                 }
                 view_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 view_btn.style.fontFamily = "Chewy";
+                view_btn.addEventListener("click", function(event) {
+                    view_user();
+                    event.preventDefault();
+                });
                 mainD.appendChild(view_btn);
 
                 var like_btn = document.createElement("button");
                 like_btn.innerHTML = "like";
+                like_btn.id = response.users_array[key]['username'] + "_like_btn";
                 like_btn.style.height = "25px";
                 like_btn.style.width = "130px";
                 like_btn.style.float = "right";
@@ -62,6 +78,10 @@ httpRequest.addEventListener("readystatechange", function() {
                 like_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 like_btn.style.fontFamily = "Chewy";
                 like_btn.style.borderRadius = "20px";
+                like_btn.addEventListener("click", function(event) {
+                    like_user();
+                    event.preventDefault();
+                });
                 mainD.appendChild(like_btn);
 
 
@@ -88,19 +108,3 @@ httpRequest.addEventListener("readystatechange", function() {
 });
 httpRequest.open("POST", "get_profiles.php", true);
 httpRequest.send();
-
-/*
-    ajax_post("get_profiles.php", data, function(httpRequest) {
-        let response = JSON.parse(httpRequest.responseText);
-        if (response.status == false) {
-            displayError(response.statusMsg);
-        } else {
-            var profile_list = document.getElementById("profile_list");
-
-            console.log(response.users_array);
-
-
-
-
-        }
-    });*/
