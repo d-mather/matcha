@@ -32,9 +32,10 @@ try {
 	  <link rel="stylesheet" href="css/modulr.css" />
 		<link rel="stylesheet" type="text/css" href="css/all_styles.css">
 		<script type="text/javascript" src="script.js"></script>
+		<script type="text/javascript" src="get_users.js"></script>
 	</head>
 
-	<body onload="show_users()">
+	<body>
 <header id="header">
   <p style="margin-left:10px;margin-top:10px;"> <img id="pro_pic" src="<?php if ($profile_pic) {
     echo $profile_pic;
