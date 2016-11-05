@@ -1,22 +1,22 @@
-function view_user(user) {
+function view_user(tmp) {
     var childs = document.querySelector('#profile_list').children;
     for (var i = 0; i < childs.length; ++i) {
         var child = childs[i];
-        var tmp = user.split('_')[0];
-        if (tmp == child.id) {
-            var temp = String("you viewed: " + tmp);
+        var user = tmp.split('_')[0];
+        if (user == child.id) {
+            var temp = String("you viewed: " + user);
             console.log(temp);
         }
     }
 }
 
-function like_user(user) {
+function like_user(tmp) {
     var childs = document.querySelector('#profile_list').children;
     for (var i = 0; i < childs.length; ++i) {
         var child = childs[i];
-        var tmp = user.split('_')[0];
-        if (tmp == child.id) {
-            var temp = String("you liked: " + tmp);
+        var user = tmp.split('_')[0];
+        if (user == child.id) {
+            var temp = String("you liked: " + user);
             console.log(temp);
         }
     }
