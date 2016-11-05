@@ -1,3 +1,27 @@
+function view_user(tmp) {
+    var childs = document.querySelector('#profile_list').children;
+    for (var i = 0; i < childs.length; ++i) {
+        var child = childs[i];
+        var user = tmp.split('_')[0];
+        if (user == child.id) {
+            var temp = String("you viewed: " + user);
+            console.log(temp);
+        }
+    }
+}
+
+function like_user(tmp) {
+    var childs = document.querySelector('#profile_list').children;
+    for (var i = 0; i < childs.length; ++i) {
+        var child = childs[i];
+        var user = tmp.split('_')[0];
+        if (user == child.id) {
+            var temp = String("you liked: " + user);
+            console.log(temp);
+        }
+    }
+}
+
 // Show users at home
 var httpRequest = new XMLHttpRequest();
 httpRequest.addEventListener("error", function(event) {
@@ -14,6 +38,7 @@ httpRequest.addEventListener("readystatechange", function() {
             var profile_list = document.getElementById("profile_list");
             for (var key in response.users_array) {
                 var mainD = document.createElement("div");
+                mainD.id = response.users_array[key]['username'];
                 mainD.style.height = "340px";
                 mainD.style.width = "320px";
                 mainD.style.float = "left";
@@ -25,6 +50,8 @@ httpRequest.addEventListener("readystatechange", function() {
                 } else {
                     mainD.style.backgroundColor = "rgba(112,163,1, 0.6)";
                 }
+
+
                 var pro_pic = document.createElement("img");
                 pro_pic.src = response.users_array[key]['pic_path_and_name'];
                 pro_pic.style.height = "180px";
@@ -33,6 +60,7 @@ httpRequest.addEventListener("readystatechange", function() {
 
                 var view_btn = document.createElement("button");
                 view_btn.innerHTML = "view";
+                view_btn.id = response.users_array[key]['username'] + "_viewbtn";
                 view_btn.style.height = "70px";
                 view_btn.style.width = "130px";
                 view_btn.style.float = "right";
@@ -45,10 +73,15 @@ httpRequest.addEventListener("readystatechange", function() {
                 }
                 view_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 view_btn.style.fontFamily = "Chewy";
+                view_btn.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    view_user(this.id);
+                });
                 mainD.appendChild(view_btn);
 
                 var like_btn = document.createElement("button");
                 like_btn.innerHTML = "like";
+                like_btn.id = response.users_array[key]['username'] + "_likebtn";
                 like_btn.style.height = "25px";
                 like_btn.style.width = "130px";
                 like_btn.style.float = "right";
@@ -62,6 +95,10 @@ httpRequest.addEventListener("readystatechange", function() {
                 like_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 like_btn.style.fontFamily = "Chewy";
                 like_btn.style.borderRadius = "20px";
+                like_btn.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    like_user(this.id);
+                });
                 mainD.appendChild(like_btn);
 
 
@@ -88,19 +125,3 @@ httpRequest.addEventListener("readystatechange", function() {
 });
 httpRequest.open("POST", "get_profiles.php", true);
 httpRequest.send();
-
-/*
-    ajax_post("get_profiles.php", data, function(httpRequest) {
-        let response = JSON.parse(httpRequest.responseText);
-        if (response.status == false) {
-            displayError(response.statusMsg);
-        } else {
-            var profile_list = document.getElementById("profile_list");
-
-            console.log(response.users_array);
-
-
-
-
-        }
-    });*/

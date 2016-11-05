@@ -24,6 +24,9 @@ include 'database.php';
       $sql = 'CREATE TABLE IF NOT EXISTS public (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) NOT NULL UNIQUE, likes INT NOT NULL DEFAULT "0", who_liked varchar(10000), views INT NOT NULL DEFAULT "0", who_viewed varchar(10000));';
       $conn->exec($sql);
       echo "public table created\n";
+      $sql = 'CREATE TABLE IF NOT EXISTS chat (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, username varchar(30) NOT NULL, posted_on datetime NOT NULL, message text NOT NULL, color varchar(7) DEFAULT "#000000");';
+      $conn->exec($sql);
+      echo "chat table created\n";
 
       if (is_dir('uploads')) {
           function Delete($path)
@@ -120,7 +123,7 @@ include 'database.php';
 
       $c_user = 'zxcv';
       $c_fname = 'Christy';
-      $c_lname = 'Gill';
+      $c_lname = 'Agulera';
       $c_passwd = hash('whirlpool', 'zxcv');
       $c_email = 'it@girl.com';
       $c_hashed = md5('zxcv');
