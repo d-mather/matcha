@@ -17,6 +17,46 @@ function like_user(tmp) {
         var user = tmp.split('_')[0];
         if (user == child.id) {
             var temp = String("you liked: " + user);
+            var tmpchat = document.getElementById(user + "_chatbtn");
+            tmpchat.disabled = false;
+            console.log(temp);
+        }
+    }
+}
+
+function chat_user(tmp) {
+    var childs = document.querySelector('#profile_list').children;
+    for (var i = 0; i < childs.length; ++i) {
+        var child = childs[i];
+        var user = tmp.split('_')[0];
+        if (user == child.id) {
+            var temp = String("chat with: " + user);
+            console.log(temp);
+        }
+    }
+}
+
+function block_user(tmp) {
+    var childs = document.querySelector('#profile_list').children;
+    for (var i = 0; i < childs.length; ++i) {
+        var child = childs[i];
+        var user = tmp.split('_')[0];
+        if (user == child.id) {
+            var temp = String("you blockd: " + user);
+            console.log(temp);
+        }
+    }
+}
+
+function report_user(tmp) {
+    var childs = document.querySelector('#profile_list').children;
+    for (var i = 0; i < childs.length; ++i) {
+        var child = childs[i];
+        var user = tmp.split('_')[0];
+        if (user == child.id) {
+            var temp = String("you reported: " + user);
+            var tmpchat = document.getElementById(user + "_chatbtn");
+            tmpchat.disabled = false;
             console.log(temp);
         }
     }
@@ -101,7 +141,6 @@ httpRequest.addEventListener("readystatechange", function() {
                 });
                 mainD.appendChild(like_btn);
 
-
                 var text = document.createElement("div");
                 text.innerHTML = response.users_array[key]['fname'] + " " + response.users_array[key]['lname'] + ", " + response.users_array[key]['age'];
                 text.style.color = "black";
@@ -113,6 +152,77 @@ httpRequest.addEventListener("readystatechange", function() {
                 moretext.style.color = "black";
                 mainD.appendChild(moretext);
 
+                var chat_btn = document.createElement("button");
+                chat_btn.innerHTML = "chat";
+                chat_btn.id = response.users_array[key]['username'] + "_chatbtn";
+                chat_btn.style.height = "25px";
+                chat_btn.style.width = "130px";
+                chat_btn.style.float = "right";
+                if (response.users_array[key]['gender'] == 'male') {
+                    chat_btn.style.color = "rgb(33,158,242)";
+                } else if (response.users_array[key]['gender'] == 'female') {
+                    chat_btn.style.color = "rgb(187,58,242)";
+                } else {
+                    chat_btn.style.color = "rgb(112,163,1)";
+                }
+                chat_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
+                chat_btn.style.fontFamily = "Chewy";
+                chat_btn.style.borderRadius = "20px";
+                chat_btn.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    chat_user(this.id);
+                });
+                chat_btn.disabled = true;
+                mainD.appendChild(chat_btn);
+
+                var br1 = document.createElement("br");
+                mainD.appendChild(br1);
+                var br2 = document.createElement("br");
+                mainD.appendChild(br2);
+
+                var block_btn = document.createElement("button");
+                block_btn.innerHTML = "block";
+                block_btn.id = response.users_array[key]['username'] + "_blockbtn";
+                block_btn.style.height = "25px";
+                block_btn.style.width = "130px";
+                block_btn.style.float = "right";
+                if (response.users_array[key]['gender'] == 'male') {
+                    block_btn.style.color = "rgb(33,158,242)";
+                } else if (response.users_array[key]['gender'] == 'female') {
+                    block_btn.style.color = "rgb(187,58,242)";
+                } else {
+                    block_btn.style.color = "rgb(112,163,1)";
+                }
+                block_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
+                block_btn.style.fontFamily = "Chewy";
+                block_btn.style.borderRadius = "20px";
+                block_btn.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    block_user(this.id);
+                });
+                mainD.appendChild(block_btn);
+
+                var report_btn = document.createElement("button");
+                report_btn.innerHTML = "report user as fake";
+                report_btn.id = response.users_array[key]['username'] + "_reportbtn";
+                report_btn.style.height = "25px";
+                report_btn.style.width = "130px";
+                report_btn.style.float = "right";
+                if (response.users_array[key]['gender'] == 'male') {
+                    report_btn.style.color = "rgb(33,158,242)";
+                } else if (response.users_array[key]['gender'] == 'female') {
+                    report_btn.style.color = "rgb(187,58,242)";
+                } else {
+                    report_btn.style.color = "rgb(112,163,1)";
+                }
+                report_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
+                report_btn.style.fontFamily = "Chewy";
+                report_btn.style.borderRadius = "20px";
+                report_btn.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    report_user(this.id);
+                });
+                mainD.appendChild(report_btn);
 
 
 
