@@ -1,11 +1,25 @@
-function view_user() {
-    var tmp = String("you pressed view");
-    console.log(tmp);
+function view_user(user) {
+    var childs = document.querySelector('#profile_list').children;
+    for (var i = 0; i < childs.length; ++i) {
+        var child = childs[i];
+        var tmp = user.split('_')[0];
+        if (tmp == child.id) {
+            var temp = String("you viewed: " + tmp);
+            console.log(temp);
+        }
+    }
 }
 
-function like_user() {
-    var tmp = String("you pressed like");
-    console.log(tmp);
+function like_user(user) {
+    var childs = document.querySelector('#profile_list').children;
+    for (var i = 0; i < childs.length; ++i) {
+        var child = childs[i];
+        var tmp = user.split('_')[0];
+        if (tmp == child.id) {
+            var temp = String("you liked: " + tmp);
+            console.log(temp);
+        }
+    }
 }
 
 // Show users at home
@@ -24,6 +38,7 @@ httpRequest.addEventListener("readystatechange", function() {
             var profile_list = document.getElementById("profile_list");
             for (var key in response.users_array) {
                 var mainD = document.createElement("div");
+                mainD.id = response.users_array[key]['username'];
                 mainD.style.height = "340px";
                 mainD.style.width = "320px";
                 mainD.style.float = "left";
@@ -35,6 +50,8 @@ httpRequest.addEventListener("readystatechange", function() {
                 } else {
                     mainD.style.backgroundColor = "rgba(112,163,1, 0.6)";
                 }
+
+
                 var pro_pic = document.createElement("img");
                 pro_pic.src = response.users_array[key]['pic_path_and_name'];
                 pro_pic.style.height = "180px";
@@ -43,7 +60,7 @@ httpRequest.addEventListener("readystatechange", function() {
 
                 var view_btn = document.createElement("button");
                 view_btn.innerHTML = "view";
-                view_btn.id = response.users_array[key]['username'] + "_view_btn";
+                view_btn.id = response.users_array[key]['username'] + "_viewbtn";
                 view_btn.style.height = "70px";
                 view_btn.style.width = "130px";
                 view_btn.style.float = "right";
@@ -57,14 +74,14 @@ httpRequest.addEventListener("readystatechange", function() {
                 view_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 view_btn.style.fontFamily = "Chewy";
                 view_btn.addEventListener("click", function(event) {
-                    view_user();
                     event.preventDefault();
+                    view_user(this.id);
                 });
                 mainD.appendChild(view_btn);
 
                 var like_btn = document.createElement("button");
                 like_btn.innerHTML = "like";
-                like_btn.id = response.users_array[key]['username'] + "_like_btn";
+                like_btn.id = response.users_array[key]['username'] + "_likebtn";
                 like_btn.style.height = "25px";
                 like_btn.style.width = "130px";
                 like_btn.style.float = "right";
@@ -79,8 +96,8 @@ httpRequest.addEventListener("readystatechange", function() {
                 like_btn.style.fontFamily = "Chewy";
                 like_btn.style.borderRadius = "20px";
                 like_btn.addEventListener("click", function(event) {
-                    like_user();
                     event.preventDefault();
+                    like_user(this.id);
                 });
                 mainD.appendChild(like_btn);
 
