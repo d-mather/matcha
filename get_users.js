@@ -55,8 +55,6 @@ function report_user(tmp) {
         var user = tmp.split('_')[0];
         if (user == child.id) {
             var temp = String("you reported: " + user);
-            var tmpchat = document.getElementById(user + "_chatbtn");
-            tmpchat.disabled = false;
             console.log(temp);
         }
     }
@@ -132,6 +130,8 @@ httpRequest.addEventListener("readystatechange", function() {
                 } else {
                     like_btn.style.color = "rgb(112,163,1)";
                 }
+                if (response.users_array[key]['pic_path_and_name'] == "" || !response.users_array[key]['pic_path_and_name'])
+                    like_btn.disabled = true;
                 like_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 like_btn.style.fontFamily = "Chewy";
                 like_btn.style.borderRadius = "20px";

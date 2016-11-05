@@ -37,12 +37,17 @@ try {
             while ($result3 = $sql2->fetch(PDO::FETCH_ASSOC)) {
                 if ($login == $result3['username'] || $result3['pic_number'] != 1) {
                     continue;
-                } elseif ($result3['username'] == $result1['username']) {
-                    $tmp_array = array('pic_path_and_name' => $result3['pic_path_and_name']);
-                    $user_tmp_array = array_merge($user_tmp_array, $tmp_array);
+                } elseif ($result3['username'] == $result1['username'] && $result3['pic_number'] == 1) {
+                    $tmp_array_pic = array('pic_path_and_name' => $result3['pic_path_and_name']);
+                    $user_tmp_array = array_merge($user_tmp_array, $tmp_array_pic);
                     break;
                 }
             }
+            if (!$tmp_array_pic) {
+                $tmp_array_pic = array('pic_path_and_name' => '');
+                $user_tmp_array = array_merge($user_tmp_array, $tmp_array_pic);
+            }
+            $tmp_array_pic = null;
             $sql2 = $conn->prepare('SELECT username, likes, views FROM `public`');
             $sql2->execute();
             while ($result4 = $sql2->fetch(PDO::FETCH_ASSOC)) {
