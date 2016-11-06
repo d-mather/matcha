@@ -10,9 +10,11 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = $conn->prepare('SELECT username, pic_path_and_name, pic_number FROM `pictures`');
     $sql->execute();
+    $_SESSION['pro_pic'] = '';
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
         if ($result['username'] == $login && $result['pic_number'] == 1) {
             $profile_pic = $result['pic_path_and_name'];
+            $_SESSION['pro_pic'] = $profile_pic;
         }
     }
 } catch (PDOException $e) {
@@ -47,16 +49,6 @@ try {
     <div id="profile_list">
     </div>
 </section>
-
-
-
-
-
-
-
-
-
-
 
 <footer id="footer">
 
@@ -100,25 +92,6 @@ try {
 </div>
 
 </footer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!--
 <footer id="footer">

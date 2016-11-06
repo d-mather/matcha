@@ -1,3 +1,38 @@
+// A lightweight function for ajax POST
+function ajax_post(url, data, callback) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.addEventListener("error", function(event) {
+        console.log("An error has occured. ERROR : " + event.message);
+    });
+    httpRequest.addEventListener("readystatechange", function() {
+        if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+            callback(httpRequest);
+        }
+    });
+    httpRequest.open("POST", url, true);
+    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    httpRequest.send(data);
+}
+
+// Function to display errors
+function displayError(errMsg) {
+    let errDiv = document.getElementById("error-messages");
+    clearTimeout(addClass_timeout);
+    clearTimeout(removeError_timeout);
+    if (errDiv) {
+        errDiv.innerHTML = errMsg;
+        let msgs = errDiv.childNodes;
+        for (let msg of msgs) {
+            addClass(msg, "scale-in");
+            addClass(msg, "slow");
+        }
+    }
+    let tmp = document.createElement("div");
+    tmp.innerHTML = errMsg;
+    errMsg = tmp.textContent || tmp.innerText || "No error message found.";
+    console.log(errMsg);
+}
+
 function view_user(tmp) {
     var childs = document.querySelector('#profile_list').children;
     for (var i = 0; i < childs.length; ++i) {
@@ -20,6 +55,11 @@ function like_user(tmp) {
             var tmpchat = document.getElementById(user + "_chatbtn");
             tmpchat.disabled = false;
             console.log(temp);
+            let data = "liked=" + user;
+            ajax_post("like_user.php", data, function(httpRequest) {
+                let response = JSON.parse(httpRequest.responseText);
+                console.log(response.status);
+            });
         }
     }
 }
@@ -56,6 +96,11 @@ function report_user(tmp) {
         if (user == child.id) {
             var temp = String("you reported: " + user);
             console.log(temp);
+            let data = "reported=" + user;
+            ajax_post("report_email.php", data, function(httpRequest) {
+                let response = JSON.parse(httpRequest.responseText);
+                displayError(response.statusMsg);
+            });
         }
     }
 }
@@ -130,7 +175,7 @@ httpRequest.addEventListener("readystatechange", function() {
                 } else {
                     like_btn.style.color = "rgb(112,163,1)";
                 }
-                if (response.users_array[key]['pic_path_and_name'] == "" || !response.users_array[key]['pic_path_and_name'])
+                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic)
                     like_btn.disabled = true;
                 like_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 like_btn.style.fontFamily = "Chewy";

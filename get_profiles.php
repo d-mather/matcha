@@ -62,7 +62,8 @@ try {
             $users_array[$result1['username']] = $user_tmp_array;
         }
     }
-    $response = array('status' => true, 'users_array' => $users_array);
+    $own_user_pro_pic = $_SESSION['pro_pic'];
+    $response = array('status' => true, 'users_array' => $users_array, 'own_user_pro_pic' => $own_user_pro_pic);
     die(json_encode($response));
 } catch (PDOException $e) {
     $response = array('status' => false, 'statusMsg' => '<p class="danger">Unfortunately there was an error: '.$e.'</p>');
