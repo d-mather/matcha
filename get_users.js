@@ -198,7 +198,7 @@ httpRequest.addEventListener("readystatechange", function() {
                 mainD.appendChild(text);
 
                 var moretext = document.createElement("div");
-                moretext.innerHTML = "likes: " + response.users_array[key]['likes'] + " | views: " + response.users_array[key]['views'];
+                moretext.innerHTML = "likes: " + response.users_array[key]['likes'] + " | views: " + response.users_array[key]['views'] + "<br>Fame rating: " + response.users_array[key]['likes'];
                 moretext.style.color = "black";
                 mainD.appendChild(moretext);
 
