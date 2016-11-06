@@ -58,7 +58,12 @@ function like_user(tmp) {
             let data = "liked=" + user;
             ajax_post("like_user.php", data, function(httpRequest) {
                 let response = JSON.parse(httpRequest.responseText);
-                console.log(response.status);
+                if (response.status == true) {
+                    var tmplike = document.getElementById(user + "_likebtn");
+                    tmplike.disabled = true;
+                } else {
+                    displayError(response.statusMsg);
+                }
             });
         }
     }
@@ -175,7 +180,7 @@ httpRequest.addEventListener("readystatechange", function() {
                 } else {
                     like_btn.style.color = "rgb(112,163,1)";
                 }
-                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic)
+                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic || response.users_array[key]['who_liked'].includes(response.logged_on_user))
                     like_btn.disabled = true;
                 like_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 like_btn.style.fontFamily = "Chewy";
@@ -217,7 +222,8 @@ httpRequest.addEventListener("readystatechange", function() {
                     event.preventDefault();
                     chat_user(this.id);
                 });
-                chat_btn.disabled = true;
+                if (!response.users_array[key]['who_liked'].includes(response.logged_on_user))
+                    chat_btn.disabled = true;
                 mainD.appendChild(chat_btn);
 
                 var br1 = document.createElement("br");
@@ -268,10 +274,6 @@ httpRequest.addEventListener("readystatechange", function() {
                     report_user(this.id);
                 });
                 mainD.appendChild(report_btn);
-
-
-
-
 
                 profile_list.appendChild(mainD);
             }
