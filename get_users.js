@@ -103,10 +103,14 @@ function block_user(tmp) {
 
                     if (tmpblock.innerHTML == "block") {
                         tmpblock.innerHTML = "unblock";
+                        var tmplike = document.getElementById(user + "_likebtn");
+                        tmplike.disabled = true;
                         var temp = String("you blocked: " + user);
                         console.log(temp);
                     } else if (tmpblock.innerHTML == "unblock") {
                         tmpblock.innerHTML = "block";
+                        var tmplike = document.getElementById(user + "_likebtn");
+                        tmplike.disabled = false;
                         var temp = String("you unblocked: " + user);
                         console.log(temp);
                     }
@@ -206,7 +210,7 @@ httpRequest.addEventListener("readystatechange", function() {
                 } else {
                     like_btn.style.color = "rgb(112,163,1)";
                 }
-                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic || response.users_array[key]['who_liked'].includes(response.logged_on_user))
+                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic || response.users_array[key]['who_liked'].includes(response.logged_on_user) || response.users_array[key]['who_blocked'].includes(response.logged_on_user))
                     like_btn.disabled = true;
                 like_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 like_btn.style.fontFamily = "Chewy";
@@ -262,7 +266,7 @@ httpRequest.addEventListener("readystatechange", function() {
 
                 var block_btn = document.createElement("button");
                 block_btn.id = response.users_array[key]['username'] + "_blockbtn";
-                if (response.users_array[key]['blocked'].includes(response.logged_on_user)) {
+                if (response.users_array[key]['who_blocked'].includes(response.logged_on_user)) {
                     block_btn.innerHTML = "unblock";
                 } else {
                     block_btn.innerHTML = "block";

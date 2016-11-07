@@ -21,13 +21,13 @@ include 'database.php';
       $sql = 'CREATE TABLE IF NOT EXISTS pictures (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, username varchar(30) NOT NULL, pic_path_and_name varchar(28), pic_number INT);';
       $conn->exec($sql);
       echo "pictures table created\n";
-      $sql = 'CREATE TABLE IF NOT EXISTS public (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) NOT NULL UNIQUE, likes INT NOT NULL DEFAULT "0", who_liked TEXT, views INT NOT NULL DEFAULT "0", who_viewed TEXT, blocked TEXT, visited TEXT);';
+      $sql = 'CREATE TABLE IF NOT EXISTS public (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) NOT NULL UNIQUE, likes INT NOT NULL DEFAULT "0", who_liked TEXT, views INT NOT NULL DEFAULT "0", who_viewed TEXT, blocked TEXT, who_blocked TEXT, visited TEXT);';
       $conn->exec($sql);
       echo "public table created\n";
       $sql = 'CREATE TABLE IF NOT EXISTS chat (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, username varchar(30) NOT NULL, posted_on datetime NOT NULL, message text NOT NULL, color varchar(7) DEFAULT "#000000");';
       $conn->exec($sql);
       echo "chat table created\n";
-
+/*
       if (is_dir('uploads')) {
           function Delete($path)
           {
@@ -51,7 +51,7 @@ include 'database.php';
               echo "uploads directory not deleted\n";
           }
       }
-
+*/
       $a_user = 'admin';
       $a_fname = 'Dillon';
       $a_lname = 'Mather';
@@ -67,6 +67,8 @@ include 'database.php';
       $a_interests = preg_split("/[\s,#]+/", $a_interests);
       $a_interests = array_filter($a_interests);
       $a_interests = implode("\n", $a_interests);
+      $a_pic_path_and_name = './uploads/1.jpg';
+      $a_pic_number = 1;
 
       $sql = $conn->prepare('INSERT IGNORE INTO users (username, fname, lname, password, email, hashed, meta) VALUES (?, ?, ?, ?, ?, ?, ?);');
       $sql->execute([$a_user, $a_fname, $a_lname, $a_passwd, $a_email, $a_hashed, $a_meta]);
@@ -74,10 +76,15 @@ include 'database.php';
       $sql->execute([$a_user, $a_gender, $a_sex_pref, $a_age, $a_bio, $a_interests]);
       $sql = $conn->prepare('INSERT IGNORE INTO public (username) VALUES (?);');
       $sql->execute([$a_user]);
+      $sql = $conn->prepare('INSERT IGNORE INTO pictures (username, pic_path_and_name, pic_number) VALUES (?, ?, ?);');
+      $sql->execute([$a_user, $a_pic_path_and_name, $a_pic_number]);
+
+      echo "admin user inserted\n";
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       $v_user = 'asdf';
-      $v_fname = 'Ace';
-      $v_lname = 'Ventura';
+      $v_fname = 'Angus';
+      $v_lname = 'Bromilow';
       $v_passwd = hash('whirlpool', 'asdf');
       $v_email = 'me@guy.com';
       $v_hashed = md5('asdf');
@@ -90,13 +97,19 @@ include 'database.php';
       $v_interests = preg_split("/[\s,#]+/", $v_interests);
       $v_interests = array_filter($v_interests);
       $v_interests = implode("\n", $v_interests);
+      $v_pic_path_and_name = './uploads/2.jpg';
+      $v_pic_number = 1;
 
+      $sql = $conn->prepare('INSERT IGNORE INTO pictures (username, pic_path_and_name, pic_number) VALUES (?, ?, ?);');
+      $sql->execute([$v_user, $v_pic_path_and_name, $v_pic_number]);
       $sql = $conn->prepare('INSERT IGNORE INTO users (username, fname, lname, password, email, hashed, meta) VALUES (?, ?, ?, ?, ?, ?, ?);');
       $sql->execute([$v_user, $v_fname, $v_lname, $v_passwd, $v_email, $v_hashed, $v_meta]);
       $sql = $conn->prepare('INSERT IGNORE INTO profiles (username, gender, sex_pref, age, biography, interests) VALUES (?, ?, ?, ?, ?, ?);');
       $sql->execute([$v_user, $v_gender, $v_sex_pref, $v_age, $v_bio, $v_interests]);
       $sql = $conn->prepare('INSERT IGNORE INTO public (username) VALUES (?);');
       $sql->execute([$v_user]);
+
+      echo "asdf user inserted\n";
 
       $g_user = 'qwer';
       $g_fname = 'Justin';
@@ -113,13 +126,19 @@ include 'database.php';
       $g_interests = preg_split("/[\s,#]+/", $g_interests);
       $g_interests = array_filter($g_interests);
       $g_interests = implode("\n", $g_interests);
+      $g_pic_path_and_name = './uploads/3.jpg';
+      $g_pic_number = 1;
 
+      $sql = $conn->prepare('INSERT IGNORE INTO pictures (username, pic_path_and_name, pic_number) VALUES (?, ?, ?);');
+      $sql->execute([$g_user, $g_pic_path_and_name, $g_pic_number]);
       $sql = $conn->prepare('INSERT IGNORE INTO users (username, fname, lname, password, email, hashed, meta) VALUES (?, ?, ?, ?, ?, ?, ?);');
       $sql->execute([$g_user, $g_fname, $g_lname, $g_passwd, $g_email, $g_hashed, $g_meta]);
       $sql = $conn->prepare('INSERT IGNORE INTO profiles (username, gender, sex_pref, age, biography, interests) VALUES (?, ?, ?, ?, ?, ?);');
       $sql->execute([$g_user, $g_gender, $g_sex_pref, $g_age, $g_bio, $g_interests]);
       $sql = $conn->prepare('INSERT IGNORE INTO public (username) VALUES (?);');
       $sql->execute([$g_user]);
+
+      echo "qwer user inserted\n";
 
       $c_user = 'zxcv';
       $c_fname = 'Emma';
@@ -136,15 +155,21 @@ include 'database.php';
       $c_interests = preg_split("/[\s,#]+/", $c_interests);
       $c_interests = array_filter($c_interests);
       $c_interests = implode("\n", $c_interests);
+      $c_pic_path_and_name = './uploads/4.jpg';
+      $c_pic_number = 1;
 
+      $sql = $conn->prepare('INSERT IGNORE INTO pictures (username, pic_path_and_name, pic_number) VALUES (?, ?, ?);');
+      $sql->execute([$c_user, $c_pic_path_and_name, $c_pic_number]);
       $sql = $conn->prepare('INSERT IGNORE INTO users (username, fname, lname, password, email, hashed, meta) VALUES (?, ?, ?, ?, ?, ?, ?);');
       $sql->execute([$c_user, $c_fname, $c_lname, $c_passwd, $c_email, $c_hashed, $c_meta]);
       $sql = $conn->prepare('INSERT IGNORE INTO profiles (username, gender, sex_pref, age, biography, interests) VALUES (?, ?, ?, ?, ?, ?);');
       $sql->execute([$c_user, $c_gender, $c_sex_pref, $c_age, $c_bio, $c_interests]);
       $sql = $conn->prepare('INSERT IGNORE INTO public (username) VALUES (?);');
       $sql->execute([$c_user]);
+
+      echo "zxcv user inserted\n";
+
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      echo "admin user inserted\n";
   } catch (PDOException $e) {
       echo 'Connection failed: '.$e->getMessage();
   }

@@ -49,7 +49,7 @@ try {
                 $user_tmp_array = array_merge($user_tmp_array, $tmp_array_pic);
             }
             $tmp_array_pic = null;
-            $sql2 = $conn->prepare('SELECT username, likes, views, who_liked, blocked, visited FROM `public`');
+            $sql2 = $conn->prepare('SELECT username, likes, views, who_liked, blocked, who_blocked, visited FROM `public`');
             $sql2->execute();
             while ($result4 = $sql2->fetch(PDO::FETCH_ASSOC)) {
                 if ($login == $result4['username']) {
@@ -61,7 +61,10 @@ try {
                     if (!$result4['blocked']) {
                         $result4['blocked'] = '';
                     }
-                    $tmp_array = array('likes' => $result4['likes'], 'views' => $result4['views'], 'who_liked' => $result4['who_liked'], 'blocked' => $result4['blocked'], 'visited' => $result4['visited']);
+                    if (!$result4['who_blocked']) {
+                        $result4['who_blocked'] = '';
+                    }
+                    $tmp_array = array('likes' => $result4['likes'], 'views' => $result4['views'], 'who_liked' => $result4['who_liked'], 'blocked' => $result4['blocked'], 'who_blocked' => $result4['who_blocked'], 'visited' => $result4['visited']);
                     $user_tmp_array = array_merge($user_tmp_array, $tmp_array);
                     break;
                 }
