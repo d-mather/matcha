@@ -7,6 +7,7 @@ try {
     $login = $_SESSION['logged_on_user'];
     $users_array = array();
     $user_tmp_array = array();
+    $who_liked = array();
     $DB_DSN = $DB_DSN.';dbname=matcha';
     $conn = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -37,19 +38,27 @@ try {
             while ($result3 = $sql2->fetch(PDO::FETCH_ASSOC)) {
                 if ($login == $result3['username'] || $result3['pic_number'] != 1) {
                     continue;
-                } elseif ($result3['username'] == $result1['username']) {
-                    $tmp_array = array('pic_path_and_name' => $result3['pic_path_and_name']);
-                    $user_tmp_array = array_merge($user_tmp_array, $tmp_array);
+                } elseif ($result3['username'] == $result1['username'] && $result3['pic_number'] == 1) {
+                    $tmp_array_pic = array('pic_path_and_name' => $result3['pic_path_and_name']);
+                    $user_tmp_array = array_merge($user_tmp_array, $tmp_array_pic);
                     break;
                 }
             }
-            $sql2 = $conn->prepare('SELECT username, likes, views FROM `public`');
+            if (!$tmp_array_pic) {
+                $tmp_array_pic = array('pic_path_and_name' => '');
+                $user_tmp_array = array_merge($user_tmp_array, $tmp_array_pic);
+            }
+            $tmp_array_pic = null;
+            $sql2 = $conn->prepare('SELECT username, likes, views, who_liked FROM `public`');
             $sql2->execute();
             while ($result4 = $sql2->fetch(PDO::FETCH_ASSOC)) {
                 if ($login == $result4['username']) {
                     continue;
                 } elseif ($result4['username'] == $result1['username']) {
-                    $tmp_array = array('likes' => $result4['likes'], 'views' => $result4['views']);
+                    if (!$result4['who_liked']) {
+                        $result4['who_liked'] = '';
+                    }
+                    $tmp_array = array('likes' => $result4['likes'], 'views' => $result4['views'], 'who_liked' => $result4['who_liked']);
                     $user_tmp_array = array_merge($user_tmp_array, $tmp_array);
                     break;
                 }
@@ -57,7 +66,9 @@ try {
             $users_array[$result1['username']] = $user_tmp_array;
         }
     }
-    $response = array('status' => true, 'users_array' => $users_array);
+    $own_user_pro_pic = $_SESSION['pro_pic'];
+    $logged_on_user = $_SESSION['logged_on_user'];
+    $response = array('status' => true, 'users_array' => $users_array, 'own_user_pro_pic' => $own_user_pro_pic, 'logged_on_user' => $logged_on_user);
     die(json_encode($response));
 } catch (PDOException $e) {
     $response = array('status' => false, 'statusMsg' => '<p class="danger">Unfortunately there was an error: '.$e.'</p>');
