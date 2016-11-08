@@ -14,7 +14,7 @@ function ajax_post(url, data, callback) {
     httpRequest.send(data);
 }
 
-// Function to display errors
+// Function to display messages
 function displayError(errMsg) {
     let errDiv = document.getElementById("error-messages");
     clearTimeout(addClass_timeout);
@@ -40,7 +40,13 @@ function view_user(tmp) {
         var user = tmp.split('_')[0];
         if (user == child.id) {
             var temp = String("you viewed: " + user);
-            console.log(temp);
+            var tmpchat = document.getElementById(user + "_viewbtn");
+
+            let data = "viewed=" + user;
+            ajax_post("view_user.php", data, function(httpRequest) {
+                let response = JSON.parse(httpRequest.responseText);
+
+            });
         }
     }
 }
@@ -51,16 +57,16 @@ function like_user(tmp) {
         var child = childs[i];
         var user = tmp.split('_')[0];
         if (user == child.id) {
-            var temp = String("you liked: " + user);
-            var tmpchat = document.getElementById(user + "_chatbtn");
-            tmpchat.disabled = false;
-            console.log(temp);
             let data = "liked=" + user;
             ajax_post("like_user.php", data, function(httpRequest) {
                 let response = JSON.parse(httpRequest.responseText);
                 if (response.status == true) {
                     var tmplike = document.getElementById(user + "_likebtn");
                     tmplike.disabled = true;
+                    var temp = String("you liked: " + user);
+                    var tmpchat = document.getElementById(user + "_chatbtn");
+                    tmpchat.disabled = false;
+                    console.log(temp);
                 } else {
                     displayError(response.statusMsg);
                 }
@@ -87,8 +93,29 @@ function block_user(tmp) {
         var child = childs[i];
         var user = tmp.split('_')[0];
         if (user == child.id) {
-            var temp = String("you blockd: " + user);
-            console.log(temp);
+            var tmpblock = document.getElementById(user + "_blockbtn");
+            let data = "blocked=" + user + "&status=" + tmpblock.innerHTML;
+            ajax_post("blocked.php", data, function(httpRequest) {
+                let response = JSON.parse(httpRequest.responseText);
+                if (response.status == false)
+                    displayError(response.statusMsg);
+                else {
+
+                    if (tmpblock.innerHTML == "block") {
+                        tmpblock.innerHTML = "unblock";
+                        var tmplike = document.getElementById(user + "_likebtn");
+                        tmplike.disabled = true;
+                        var temp = String("you blocked: " + user);
+                        console.log(temp);
+                    } else if (tmpblock.innerHTML == "unblock") {
+                        tmpblock.innerHTML = "block";
+                        var tmplike = document.getElementById(user + "_likebtn");
+                        tmplike.disabled = false;
+                        var temp = String("you unblocked: " + user);
+                        console.log(temp);
+                    }
+                }
+            });
         }
     }
 }
@@ -165,6 +192,9 @@ httpRequest.addEventListener("readystatechange", function() {
                     event.preventDefault();
                     view_user(this.id);
                 });
+                if (response.users_array[key]['blocked'].includes(response.logged_on_user)) {
+                    view_btn.disabled = true;
+                }
                 mainD.appendChild(view_btn);
 
                 var like_btn = document.createElement("button");
@@ -180,7 +210,7 @@ httpRequest.addEventListener("readystatechange", function() {
                 } else {
                     like_btn.style.color = "rgb(112,163,1)";
                 }
-                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic || response.users_array[key]['who_liked'].includes(response.logged_on_user))
+                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic || response.users_array[key]['who_liked'].includes(response.logged_on_user) || response.users_array[key]['who_blocked'].includes(response.logged_on_user))
                     like_btn.disabled = true;
                 like_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 like_btn.style.fontFamily = "Chewy";
@@ -189,6 +219,9 @@ httpRequest.addEventListener("readystatechange", function() {
                     event.preventDefault();
                     like_user(this.id);
                 });
+                if (response.users_array[key]['blocked'].includes(response.logged_on_user)) {
+                    like_btn.disabled = true;
+                }
                 mainD.appendChild(like_btn);
 
                 var text = document.createElement("div");
@@ -222,7 +255,7 @@ httpRequest.addEventListener("readystatechange", function() {
                     event.preventDefault();
                     chat_user(this.id);
                 });
-                if (!response.users_array[key]['who_liked'].includes(response.logged_on_user))
+                if (!response.users_array[key]['who_liked'].includes(response.logged_on_user) || response.users_array[key]['blocked'].includes(response.logged_on_user))
                     chat_btn.disabled = true;
                 mainD.appendChild(chat_btn);
 
@@ -232,8 +265,12 @@ httpRequest.addEventListener("readystatechange", function() {
                 mainD.appendChild(br2);
 
                 var block_btn = document.createElement("button");
-                block_btn.innerHTML = "block";
                 block_btn.id = response.users_array[key]['username'] + "_blockbtn";
+                if (response.users_array[key]['who_blocked'].includes(response.logged_on_user)) {
+                    block_btn.innerHTML = "unblock";
+                } else {
+                    block_btn.innerHTML = "block";
+                }
                 block_btn.style.height = "25px";
                 block_btn.style.width = "130px";
                 block_btn.style.float = "right";
