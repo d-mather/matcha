@@ -25,9 +25,7 @@ try {
 
                 $sql = $conn->prepare('UPDATE `public` SET who_blocked=? WHERE username=?');
                 $sql->execute([$user, $blocked]);
-
-                $response = array('status' => true);
-                die(json_encode($response));
+                break;
             } elseif ($status == 'unblock') {
                 $blocked = $result['blocked'];
                 if (strspn($blocked, "\n") <= 0) {
@@ -47,12 +45,23 @@ try {
                 }
                 $sql = $conn->prepare('UPDATE `public` SET who_blocked=? WHERE username=?');
                 $sql->execute([$who_blocked, $blocked_user]);
-
-                $response = array('status' => true);
-                die(json_encode($response));
+                break;
             }
         }
     }
+    $sql1 = $conn->prepare('SELECT username, who_liked FROM `public`');
+    $sql1->execute();
+    while ($result = $sql1->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $blocked_user) {
+            if (strpos($result['who_liked'], $user) !== false && $status == 'unblock') {
+                $chat_stat = 1;
+            } else {
+                $chat_stat = 0;
+            }
+        }
+    }
+    $response = array('status' => true, 'chat_stat' => $chat_stat);
+    die(json_encode($response));
 } catch (PDOException $e) {
     $response = array('status' => false, 'statusMsg' => '<p class="danger">Unfortunately there was an error: '.$e.'</p>');
     die(json_encode($response));

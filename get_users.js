@@ -62,19 +62,28 @@ function like_user(tmp) {
         var child = childs[i];
         var user = tmp.split('_')[0];
         if (user == child.id) {
-            let data = "liked=" + user;
+            var tmplike = document.getElementById(user + "_likebtn");
+            let data = "liked=" + user + "&status=" + tmplike.innerHTML;
             ajax_post("like_user.php", data, function(httpRequest) {
                 let response = JSON.parse(httpRequest.responseText);
-                if (response.status == true) {
-                    var tmplike = document.getElementById(user + "_likebtn");
-                    tmplike.disabled = true;
-                    var temp = String("you liked: " + user);
-                    var tmpchat = document.getElementById(user + "_chatbtn");
-                    tmpchat.disabled = false;
-                    console.log(temp);
-                } else {
+                if (response.status == false) {
                     displayError(response.statusMsg);
+                } else {
+                    if (tmplike.innerHTML == "like") {
+                        console.log(temp);
+                        tmplike.innerHTML = "unlike";
+                        var temp = String("you liked: " + user);
+                        var tmpchat = document.getElementById(user + "_chatbtn");
+                        tmpchat.disabled = false;
+                    } else if (tmplike.innerHTML == "unlike") {
+                        tmplike.innerHTML = "like";
+                        var tmpchat = document.getElementById(user + "_chatbtn");
+                        tmpchat.disabled = true;
+                        var temp = String("you unliked: " + user);
+                        console.log(temp);
+                    }
                 }
+
             });
         }
     }
@@ -110,12 +119,26 @@ function block_user(tmp) {
                         tmpblock.innerHTML = "unblock";
                         var tmplike = document.getElementById(user + "_likebtn");
                         tmplike.disabled = true;
+                        if (response.chat_stat == 1) {
+                            var tmpchat = document.getElementById(user + "_chatbtn");
+                            tmpchat.disabled = false;
+                        } else {
+                            var tmpchat = document.getElementById(user + "_chatbtn");
+                            tmpchat.disabled = true;
+                        }
                         var temp = String("you blocked: " + user);
                         console.log(temp);
                     } else if (tmpblock.innerHTML == "unblock") {
                         tmpblock.innerHTML = "block";
                         var tmplike = document.getElementById(user + "_likebtn");
                         tmplike.disabled = false;
+                        if (response.chat_stat == 1) {
+                            var tmpchat = document.getElementById(user + "_chatbtn");
+                            tmpchat.disabled = false;
+                        } else if (response.chat_stat == 0) {
+                            var tmpchat = document.getElementById(user + "_chatbtn");
+                            tmpchat.disabled = true;
+                        }
                         var temp = String("you unblocked: " + user);
                         console.log(temp);
                     }
@@ -203,7 +226,11 @@ httpRequest.addEventListener("readystatechange", function() {
                 mainD.appendChild(view_btn);
 
                 var like_btn = document.createElement("button");
-                like_btn.innerHTML = "like";
+                if (response.users_array[key]['who_liked'].includes(response.logged_on_user)) {
+                    like_btn.innerHTML = "unlike";
+                } else {
+                    like_btn.innerHTML = "like";
+                }
                 like_btn.id = response.users_array[key]['username'] + "_likebtn";
                 like_btn.style.height = "25px";
                 like_btn.style.width = "130px";
@@ -215,7 +242,7 @@ httpRequest.addEventListener("readystatechange", function() {
                 } else {
                     like_btn.style.color = "rgb(112,163,1)";
                 }
-                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic || response.users_array[key]['who_liked'].includes(response.logged_on_user) || response.users_array[key]['who_blocked'].includes(response.logged_on_user))
+                if (response.own_user_pro_pic == "" || !response.own_user_pro_pic || response.users_array[key]['who_blocked'].includes(response.logged_on_user))
                     like_btn.disabled = true;
                 like_btn.style.backgroundColor = "rgba(33, 24, 29, 0.8)";
                 like_btn.style.fontFamily = "Chewy";
@@ -261,7 +288,7 @@ httpRequest.addEventListener("readystatechange", function() {
                     event.preventDefault();
                     chat_user(this.id);
                 });
-                if (!response.users_array[key]['who_liked'].includes(response.logged_on_user) || response.users_array[key]['blocked'].includes(response.logged_on_user))
+                if (!response.users_array[key]['who_liked'].includes(response.logged_on_user) || response.users_array[key]['who_blocked'].includes(response.logged_on_user))
                     chat_btn.disabled = true;
                 mainD.appendChild(chat_btn);
 
