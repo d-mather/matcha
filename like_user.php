@@ -19,7 +19,7 @@ try {
             $sql->execute([$likes, $liked]);
 
             $who_liked = $result['who_liked'];
-            if ($who_liked == '') {
+            if ($who_liked == '' || !$who_liked) {
                 $who_liked = $user;
             } else {
                 $who_liked = $who_liked."\n".$user;

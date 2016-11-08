@@ -40,12 +40,16 @@ function view_user(tmp) {
         var user = tmp.split('_')[0];
         if (user == child.id) {
             var temp = String("you viewed: " + user);
-            var tmpchat = document.getElementById(user + "_viewbtn");
+            console.log(temp);
 
             let data = "viewed=" + user;
             ajax_post("view_user.php", data, function(httpRequest) {
                 let response = JSON.parse(httpRequest.responseText);
-
+                if (response.status == true) {
+                    window.location = "view_page_user.php";
+                } else {
+                    displayError(response.statusMsg);
+                }
             });
         }
     }
