@@ -51,6 +51,18 @@ try {
 
 <header id="header">
   <p style="margin-left:20px;margin-top:20px;">Account Setup:</p>
+  <div id="header" style="height:35px;top:65px;">
+  <button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
+  <button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
+  <script>
+  function goForward() {
+      window.history.forward();
+  }
+  function goBack() {
+    window.history.back();
+  }
+  </script>
+  </div>
 </header>
 
 <section id="container">
@@ -137,7 +149,7 @@ try {
 <footer id="footer">
 
  <button onclick="document.getElementById('id01').style.display='block'"
- class="w3-btn">more options</button>
+ class="w3-btn">Options</button>
   <div id="id01" class="w3-modal" style="display: none">
    <div class="w3-modal-content">
 

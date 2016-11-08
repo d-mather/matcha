@@ -210,6 +210,7 @@ progress[value]::before {
 
 .w3-btn {
     background-color: #e8d1d0;
+    font-family: Lalezar;
     color: green;
     border-radius: 20px;
 }

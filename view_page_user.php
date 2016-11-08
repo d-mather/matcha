@@ -5,6 +5,7 @@ session_start();
 
 try {
     $login = $_SESSION['logged_on_user'];
+    $v_username = $_GET['viewing'];
     $DB_DSN = $DB_DSN.';dbname=matcha';
     $conn = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -39,12 +40,24 @@ try {
 <header id="header">
   <p style="margin-left:10px;margin-top:10px;"> <img id="pro_pic" src="<?php if ($profile_pic) {
     echo $profile_pic;
-} ?>"> Hi <?php echo $_SESSION['first_name'].'!'; ?> </p>
+} ?>"> You are viewing <?php echo $v_username.'\'s Profile:'; ?> </p>
+<div id="header" style="height:35px;top:65px;">
+<button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
+<button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
+<script>
+function goForward() {
+    window.history.forward();
+}
+function goBack() {
+  window.history.back();
+}
+</script>
+</div>
 </header>
 
 <section id="container">
-		<div id="error-messages"></div>
-    <div id="profile_list">
+    <div id="viewer" style="float:left;width:50%;">
+      
     </div>
 </section>
 
@@ -52,7 +65,7 @@ try {
 <footer id="footer">
 
  <button onclick="document.getElementById('id01').style.display='block'"
- class="w3-btn">more options</button>
+ class="w3-btn">Options</button>
   <div id="id01" class="w3-modal" style="display: none">
    <div class="w3-modal-content">
 

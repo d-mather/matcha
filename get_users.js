@@ -46,7 +46,8 @@ function view_user(tmp) {
             ajax_post("view_user.php", data, function(httpRequest) {
                 let response = JSON.parse(httpRequest.responseText);
                 if (response.status == true) {
-                    window.location = "view_page_user.php";
+                    var url = "view_page_user.php?viewing=" + user;
+                    window.location = url;
                 } else {
                     displayError(response.statusMsg);
                 }
