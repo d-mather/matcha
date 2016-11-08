@@ -106,7 +106,7 @@ try {
         $interests = $_POST['interests'];
         $interests = preg_split("/[\s,#]+/", $interests);
         $interests = array_filter($interests);
-        $interests = implode("\n", $interests);
+        $interests = implode(", \n", $interests);
         $sql = $conn->prepare('UPDATE `profiles` SET interests=? WHERE username=?');
         $sql->execute([$interests, $user]);
     }

@@ -18,6 +18,55 @@ try {
             $_SESSION['pro_pic'] = $profile_pic;
         }
     }
+    $sql = $conn->prepare('SELECT username, age, biography, interests, gender, sex_pref, latitude, longitude, hidden FROM `profiles`');
+    $sql->execute();
+    while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $v_username) {
+          $v_age = $result['age'];
+          $v_biography = $result['biography'];
+          $v_gender = $result['gender'];
+          $v_sex_pref = $result['sex_pref'];
+          $v_latitude = $result['latitude'];
+          $v_longitude = $result['longitude'];
+          $v_interests = $result['interests'];
+        }
+    }
+    $sql = $conn->prepare('SELECT username, likes, views FROM `public`');
+    $sql->execute();
+    while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $v_username) {
+          $v_likes = $result['likes'];
+          $v_views = $result['views'];
+          $v_fame = $v_likes + $v_views;
+        }
+    }
+    $sql = $conn->prepare('SELECT username, fname, lname FROM `users`');
+    $sql->execute();
+    while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $v_username) {
+          $v_fname = $result['fname'];
+          $v_lname = $result['lname'];
+        }
+    }
+    $sql = $conn->prepare('SELECT username, pic_path_and_name, pic_number FROM `pictures`');
+    $sql->execute();
+    while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $v_username && $result['pic_number'] == 1) {
+          $v_pic_path_and_name1 = $result['pic_path_and_name'];
+        }
+        if ($result['username'] == $v_username && $result['pic_number'] == 2) {
+          $v_pic_path_and_name2 = $result['pic_path_and_name'];
+        }
+        if ($result['username'] == $v_username && $result['pic_number'] == 3) {
+          $v_pic_path_and_name3 = $result['pic_path_and_name'];
+        }
+        if ($result['username'] == $v_username && $result['pic_number'] == 4) {
+          $v_pic_path_and_name4 = $result['pic_path_and_name'];
+        }
+        if ($result['username'] == $v_username && $result['pic_number'] == 5) {
+          $v_pic_path_and_name5 = $result['pic_path_and_name'];
+        }
+    }
 } catch (PDOException $e) {
     file_put_contents('error_log', $e);
 }
@@ -38,9 +87,9 @@ try {
 
 	<body>
 <header id="header">
-  <p style="margin-left:10px;margin-top:10px;"> <img id="pro_pic" src="<?php if ($profile_pic) {
+  <p style="margin-left:10px;margin-top:10px;"> <a href="home.php"> <img id="pro_pic" src="<?php if ($profile_pic) {
     echo $profile_pic;
-} ?>"> You are viewing <?php echo $v_username.'\'s Profile:'; ?> </p>
+} ?>"> </a> You are viewing <?php echo $v_username.'\'s Profile:'; ?> </p>
 <div id="header" style="height:35px;top:65px;">
 <button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
 <button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
@@ -56,8 +105,26 @@ function goBack() {
 </header>
 
 <section id="container">
-    <div id="viewer" style="float:left;width:50%;">
-      
+    <div id="viewer">
+      <p style="line-height: 50px;">
+        <u>Username:</u> &nbsp <?php echo $v_username; ?> <br />
+        <u>Fame Rating:</u> &nbsp <?php echo $v_fame . " awesomness!"; ?> <br />
+        <u>Full Name:</u> &nbsp <?php echo $v_fname . " " . $lname; ?> <br />
+        <u>Age:</u> &nbsp <?php echo $v_age; ?> <br />
+        <u>Gender:</u> &nbsp <?php echo $v_gender; ?> <br />
+        <u>Sexual Preferences:</u> &nbsp <?php echo $v_sex_pref; ?> <br />
+        <u>Biography:</u> <br /> <?php echo $v_biography; ?> <br />
+        <u>Interests:</u> <br /><size style="max-width: 20%;"> <?php echo $v_interests; ?></size> <br />
+        <u>Location:</u><br />
+        latitude coords: <br /> <?php if ($v_latitude) echo $v_latitude; else echo "unknown" ?> <br />
+        longitude coords: <br /> <?php if ($v_longitude) echo $v_longitude; else echo "unknown" ?> <br />
+        <u>Pictures:</u> <br />
+      </p>
+      <img src="<?php echo $v_pic_path_and_name1; ?>" style="max-width: 50%;" />
+      <img src="<?php echo $v_pic_path_and_name2; ?>" style="max-width: 50%;" />
+      <img src="<?php echo $v_pic_path_and_name3; ?>" style="max-width: 50%;" />
+      <img src="<?php echo $v_pic_path_and_name4; ?>" style="max-width: 50%;" />
+      <img src="<?php echo $v_pic_path_and_name5; ?>" style="max-width: 50%;" />
     </div>
 </section>
 

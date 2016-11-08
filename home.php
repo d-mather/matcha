@@ -39,9 +39,9 @@ try {
 
 	<body>
 <header id="header">
-  <p style="margin-left:10px;margin-top:10px;"> <img id="pro_pic" src="<?php if ($profile_pic) {
+  <p style="margin-left:10px;margin-top:10px;"> <a href="home.php"> <img id="pro_pic" src="<?php if ($profile_pic) {
     echo $profile_pic;
-} ?>"> Hi <?php echo $_SESSION['first_name'].'!'; ?> </p>
+} ?>"> </a> Hi <?php echo $_SESSION['first_name'].'!'; ?> </p>
 <div id="header" style="height:35px;top:65px;">
 <button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
 <button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
