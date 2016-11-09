@@ -116,8 +116,8 @@ function goBack() {
         <u>Biography:</u> <br /> <?php echo $v_biography; ?> <br />
         <u>Interests:</u> <br /><size style="max-width: 20%;"> <?php echo $v_interests; ?></size> <br />
         <u>Location:</u><br />
-        latitude coords: <br /> <?php if ($v_latitude) echo $v_latitude; else echo "unknown" ?> <br />
-        longitude coords: <br /> <?php if ($v_longitude) echo $v_longitude; else echo "unknown" ?> <br />
+        latitude coords: <br /> <?php if ($v_latitude) echo $v_latitude; else echo "Unknown. Please Report User!" ?> <br />
+        longitude coords: <br /> <?php if ($v_longitude) echo $v_longitude; else echo "Unknown. Please Report User!" ?> <br />
         <u>Pictures:</u> <br />
       </p>
       <img src="<?php echo $v_pic_path_and_name1; ?>" style="max-width: 50%;" />
@@ -156,6 +156,7 @@ function goBack() {
            </form>
                 </div>
        <a class="links" href="setup_profile.php">Account Setup</a>
+       <a class="links" href="home.php">Home</a>
                 <div style="float: right; width: 170px;">
          <form method="get" action="logout.php">
                      <?php session_start(); echo $_SESSION['logged_on_user'].':'; ?>
