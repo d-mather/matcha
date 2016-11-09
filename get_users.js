@@ -95,6 +95,15 @@ function chat_user(tmp) {
         var child = childs[i];
         var user = tmp.split('_')[0];
         if (user == child.id) {
+            let data = "chat_with=" + user;
+            ajax_post("chat.php", data, function(httpRequest) {
+                let response = JSON.parse(httpRequest.responseText);
+                if (response.status == true) {
+                    window.location("chat_index.php");
+                } else {
+                    displayError(response.statusMsg);
+                }
+            });
             var temp = String("chat with: " + user);
             console.log(temp);
         }

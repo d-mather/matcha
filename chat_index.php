@@ -201,7 +201,7 @@ function update() {
 				msgarea.scrollTop = msgarea.scrollHeight;
 			}
 		}
-	      xmlhttp.open("GET","get-messages.php?username=" + username,true);
+	      xmlhttp.open("GET","get_messages.php?username=" + username,true);
 	      xmlhttp.send();
 }
 function sendmsg() {
@@ -218,7 +218,7 @@ function sendmsg() {
 				msginput.value = "";
 			}
 		}
-	      xmlhttp.open("GET","update-messages.php?username=" + username + "&message=" + message,true);
+	      xmlhttp.open("GET","update_messages.php?username=" + username + "&message=" + message,true);
 	      xmlhttp.send();
   	}
 }
