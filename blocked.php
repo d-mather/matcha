@@ -25,21 +25,19 @@ try {
                 }
                 $sql1 = $conn->prepare('UPDATE `public` SET blocked=? WHERE username=?');
                 $sql1->execute([$blocked, $user]);
-
             } elseif ($status == 'unblock') {
                 $blocked = $result['blocked'];
                 if (!strstr($blocked, PHP_EOL)) {
-                    $blocked = NULL;
+                    $blocked = null;
                 } else {
                     $blocked = str_replace($blocked_user, '', $blocked);
                 }
                 $blocked = trim($blocked);
                 if ($blocked == '' || !$blocked) {
-                    $blocked = NULL;
+                    $blocked = null;
                 }
                 $sql1 = $conn->prepare('UPDATE `public` SET blocked=? WHERE username=?');
                 $sql1->execute([$blocked, $user]);
-
             }
         }
         if ($result['username'] == $blocked_user) {
@@ -48,22 +46,22 @@ try {
                 if ($who_blocked == '' || !$who_blocked) {
                     $who_blocked = $user;
                 } else {
-                    $who_blocked = $who_blocked . "\n" . $user;
+                    $who_blocked = $who_blocked."\n".$user;
                 }
                 $sql1 = $conn->prepare('UPDATE `public` SET who_blocked=? WHERE username=?');
                 $sql1->execute([$who_blocked, $blocked_user]);
             } elseif ($status == 'unblock') {
-                  if (!strstr($who_blocked, PHP_EOL)) {
-                      $who_blocked = NULL;
-                  } else {
-                      $who_blocked = str_replace($user, '', $who_blocked);
-                  }
-                  $who_blocked = trim($who_blocked);
-                  if ($who_blocked == '' || !$who_blocked) {
-                      $who_blocked = NULL;
-                  }
-                  $sql1 = $conn->prepare('UPDATE `public` SET who_blocked=? WHERE username=?');
-                  $sql1->execute([$who_blocked, $blocked_user]);
+                if (!strstr($who_blocked, PHP_EOL)) {
+                    $who_blocked = null;
+                } else {
+                    $who_blocked = str_replace($user, '', $who_blocked);
+                }
+                $who_blocked = trim($who_blocked);
+                if ($who_blocked == '' || !$who_blocked) {
+                    $who_blocked = null;
+                }
+                $sql1 = $conn->prepare('UPDATE `public` SET who_blocked=? WHERE username=?');
+                $sql1->execute([$who_blocked, $blocked_user]);
             }
         }
     }
@@ -77,15 +75,17 @@ try {
             } else {
                 $chat_stat = 0;
             }
-            if (!strstr($result['who_blocked'], $user)) {
+        }
+        if ($result['username'] == $user) {
+            if ($result['who_blocked'] != null && (!strstr($result['who_blocked'], $user) || !strstr($result['blocked'], $user))) {
                 $chat_stat = 2;
+                break;
             }
         }
     }
 
     $response = array('status' => true, 'chat_stat' => $chat_stat);
     die(json_encode($response));
-
 } catch (PDOException $e) {
     $response = array('status' => false, 'statusMsg' => '<p class="danger">Unfortunately there was an error: '.$e.'</p>');
     die(json_encode($response));

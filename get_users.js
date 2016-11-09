@@ -131,11 +131,10 @@ function block_user(tmp) {
                         if (response.chat_stat == 1) {
                             var tmpchat = document.getElementById(user + "_chatbtn");
                             tmpchat.disabled = false;
-                        } else {
+                        } else if (response.chat_stat == 0) {
                             var tmpchat = document.getElementById(user + "_chatbtn");
                             tmpchat.disabled = true;
-                        }
-                        if (response.chat_stat == 2) {
+                        } else if (response.chat_stat == 2) {
                             var tmpchat = document.getElementById(user + "_chatbtn");
                             tmpchat.disabled = true;
                             var tmplike = document.getElementById(user + "_likebtn");
@@ -153,12 +152,12 @@ function block_user(tmp) {
                         } else if (response.chat_stat == 0) {
                             var tmpchat = document.getElementById(user + "_chatbtn");
                             tmpchat.disabled = true;
-                        }
-                        if (response.chat_stat == 2) {
+                        } else if (response.chat_stat == 2) {
                             var tmpchat = document.getElementById(user + "_chatbtn");
                             tmpchat.disabled = true;
                             var tmplike = document.getElementById(user + "_likebtn");
                             tmplike.disabled = true;
+                            console.log("hi");
                         }
                         var temp = String("you unblocked: " + user);
                         console.log(temp);
