@@ -13,16 +13,16 @@ try {
     $sql = $conn->prepare('SELECT username, views, who_viewed, visited FROM `public`');
     $sql->execute();
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
-      if ($result['username'] == $user) {
-          $visited = $result['visited'];
-          if (!$visited) {
-              $visited = $viewed . "\n";
-          } else {
-              $visited = $visited . $viewed . "\n";
-          }
-          $sql1 = $conn->prepare('UPDATE `public` SET visited=? WHERE username=?');
-          $sql1->execute([$visited, $user]);
-      }
+        if ($result['username'] == $user) {
+            $visited = $result['visited'];
+            if (!$visited) {
+                $visited = $viewed."\n";
+            } else {
+                $visited = $visited.$viewed."\n";
+            }
+            $sql1 = $conn->prepare('UPDATE `public` SET visited=? WHERE username=?');
+            $sql1->execute([$visited, $user]);
+        }
         if ($result['username'] == $viewed) {
             $views = $result['views'];
             $views = $views + 1;
@@ -32,8 +32,6 @@ try {
             $who_viewed = $result['who_viewed'];
             if ($who_viewed == '' || !$who_viewed) {
                 $who_viewed = $user;
-            } elseif (strpos($who_viewed, $user) !== false) {
-                $who_viewed = $who_viewed;
             } else {
                 $who_viewed = $who_viewed."\n".$user;
             }
@@ -44,11 +42,7 @@ try {
 
     $response = array('status' => true);
     die(json_encode($response));
-
 } catch (PDOException $e) {
     $response = array('status' => false, 'statusMsg' => '<p class="danger">Unfortunately there was an error: '.$e.'</p>');
     die(json_encode($response));
 }
-
-
-?>

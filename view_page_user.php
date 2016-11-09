@@ -22,49 +22,54 @@ try {
     $sql->execute();
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
         if ($result['username'] == $v_username) {
-          $v_age = $result['age'];
-          $v_biography = $result['biography'];
-          $v_gender = $result['gender'];
-          $v_sex_pref = $result['sex_pref'];
-          $v_latitude = $result['latitude'];
-          $v_longitude = $result['longitude'];
-          $v_interests = $result['interests'];
+            $v_age = $result['age'];
+            $v_biography = $result['biography'];
+            $v_gender = $result['gender'];
+            $v_sex_pref = $result['sex_pref'];
+            $v_latitude = $result['latitude'];
+            $v_longitude = $result['longitude'];
+            $v_interests = $result['interests'];
         }
     }
     $sql = $conn->prepare('SELECT username, likes, views FROM `public`');
     $sql->execute();
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
         if ($result['username'] == $v_username) {
-          $v_likes = $result['likes'];
-          $v_views = $result['views'];
-          $v_fame = $v_likes + $v_views;
+            $v_likes = $result['likes'];
+            $v_views = $result['views'];
+            $v_fame = $v_likes + $v_views;
         }
     }
     $sql = $conn->prepare('SELECT username, fname, lname FROM `users`');
     $sql->execute();
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
         if ($result['username'] == $v_username) {
-          $v_fname = $result['fname'];
-          $v_lname = $result['lname'];
+            $v_fname = $result['fname'];
+            $v_lname = $result['lname'];
         }
     }
+    $v_pic_path_and_name1 = '';
+    $v_pic_path_and_name2 = '';
+    $v_pic_path_and_name3 = '';
+    $v_pic_path_and_name4 = '';
+    $v_pic_path_and_name5 = '';
     $sql = $conn->prepare('SELECT username, pic_path_and_name, pic_number FROM `pictures`');
     $sql->execute();
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
         if ($result['username'] == $v_username && $result['pic_number'] == 1) {
-          $v_pic_path_and_name1 = $result['pic_path_and_name'];
+            $v_pic_path_and_name1 = $result['pic_path_and_name'];
         }
         if ($result['username'] == $v_username && $result['pic_number'] == 2) {
-          $v_pic_path_and_name2 = $result['pic_path_and_name'];
+            $v_pic_path_and_name2 = $result['pic_path_and_name'];
         }
         if ($result['username'] == $v_username && $result['pic_number'] == 3) {
-          $v_pic_path_and_name3 = $result['pic_path_and_name'];
+            $v_pic_path_and_name3 = $result['pic_path_and_name'];
         }
         if ($result['username'] == $v_username && $result['pic_number'] == 4) {
-          $v_pic_path_and_name4 = $result['pic_path_and_name'];
+            $v_pic_path_and_name4 = $result['pic_path_and_name'];
         }
         if ($result['username'] == $v_username && $result['pic_number'] == 5) {
-          $v_pic_path_and_name5 = $result['pic_path_and_name'];
+            $v_pic_path_and_name5 = $result['pic_path_and_name'];
         }
     }
 } catch (PDOException $e) {
@@ -108,23 +113,41 @@ function goBack() {
     <div id="viewer">
       <p style="line-height: 50px;">
         <u>Username:</u> &nbsp <?php echo $v_username; ?> <br />
-        <u>Fame Rating:</u> &nbsp <?php echo $v_fame . " awesomness!"; ?> <br />
-        <u>Full Name:</u> &nbsp <?php echo $v_fname . " " . $lname; ?> <br />
+        <u>Fame Rating:</u> &nbsp <?php echo $v_fame.' awesomness!'; ?> <br />
+        <u>Full Name:</u> &nbsp <?php echo $v_fname.' '.$v_lname; ?> <br />
         <u>Age:</u> &nbsp <?php echo $v_age; ?> <br />
         <u>Gender:</u> &nbsp <?php echo $v_gender; ?> <br />
         <u>Sexual Preferences:</u> &nbsp <?php echo $v_sex_pref; ?> <br />
         <u>Biography:</u> <br /> <?php echo $v_biography; ?> <br />
         <u>Interests:</u> <br /><size style="max-width: 20%;"> <?php echo $v_interests; ?></size> <br />
         <u>Location:</u><br />
-        latitude coords: <br /> <?php if ($v_latitude) echo $v_latitude; else echo "Unknown. Please Report User!" ?> <br />
-        longitude coords: <br /> <?php if ($v_longitude) echo $v_longitude; else echo "Unknown. Please Report User!" ?> <br />
+        latitude coords: <br /> <?php if ($v_latitude) {
+    echo $v_latitude;
+} else {
+    echo 'Unknown. Please Report User!';
+} ?> <br />
+        longitude coords: <br /> <?php if ($v_longitude) {
+    echo $v_longitude;
+} else {
+    echo 'Unknown. Please Report User!';
+} ?> <br />
         <u>Pictures:</u> <br />
       </p>
-      <img src="<?php echo $v_pic_path_and_name1; ?>" style="max-width: 50%;" />
-      <img src="<?php echo $v_pic_path_and_name2; ?>" style="max-width: 50%;" />
-      <img src="<?php echo $v_pic_path_and_name3; ?>" style="max-width: 50%;" />
-      <img src="<?php echo $v_pic_path_and_name4; ?>" style="max-width: 50%;" />
-      <img src="<?php echo $v_pic_path_and_name5; ?>" style="max-width: 50%;" />
+      <?php if ($v_pic_path_and_name1 != '') {
+    echo '<img src="'.$v_pic_path_and_name1.'" style="max-width: 50%;" />';
+}?>
+<?php if ($v_pic_path_and_name2 != '') {
+    echo '<img src="'.$v_pic_path_and_name2.'" style="max-width: 50%;" />';
+}?>
+<?php if ($v_pic_path_and_name3 != '') {
+    echo '<img src="'.$v_pic_path_and_name3.'" style="max-width: 50%;" />';
+}?>
+<?php if ($v_pic_path_and_name4 != '') {
+    echo '<img src="'.$v_pic_path_and_name4.'" style="max-width: 50%;" />';
+}?>
+<?php if ($v_pic_path_and_name5 != '') {
+    echo '<img src="'.$v_pic_path_and_name5.'" style="max-width: 50%;" />';
+}?>
     </div>
 </section>
 
@@ -159,7 +182,7 @@ function goBack() {
        <a class="links" href="home.php">Home</a>
                 <div style="float: right; width: 170px;">
          <form method="get" action="logout.php">
-                     <?php session_start(); echo $_SESSION['logged_on_user'].':'; ?>
+                     <?php echo $_SESSION['logged_on_user'].':'; ?>
            <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
                   </form>
          <p class="cright">

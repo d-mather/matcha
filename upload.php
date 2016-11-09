@@ -26,11 +26,12 @@ if (file_exists($target_file)) {
     echo '<p class="messages">Sorry, file already exists</p>';
     $uploadOk = 0;
 }
+/*
 if ($_FILES['fileToUpload']['size'] > 1000000) {
     echo '<p class="messages">Sorry, your file is too large</p>';
     $uploadOk = 0;
 }
-
+*/
 if ($imageFileType != 'jpg' && $imageFileType != 'png' && $imageFileType != 'jpeg' && $imageFileType != 'gif') {
     echo '<p class="messages">Sorry, only JPG, JPEG, PNG & GIF files are allowed</p>';
     $uploadOk = 0;

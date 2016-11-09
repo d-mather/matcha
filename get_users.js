@@ -98,14 +98,15 @@ function chat_user(tmp) {
             let data = "chat_with=" + user;
             ajax_post("chat.php", data, function(httpRequest) {
                 let response = JSON.parse(httpRequest.responseText);
+                var temp = String("chat with: " + user);
+                console.log(temp);
+
                 if (response.status == true) {
                     window.location("chat_index.php");
                 } else {
                     displayError(response.statusMsg);
                 }
             });
-            var temp = String("chat with: " + user);
-            console.log(temp);
         }
     }
 }
@@ -157,7 +158,6 @@ function block_user(tmp) {
                             tmpchat.disabled = true;
                             var tmplike = document.getElementById(user + "_likebtn");
                             tmplike.disabled = true;
-                            console.log("hi");
                         }
                         var temp = String("you unblocked: " + user);
                         console.log(temp);

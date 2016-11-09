@@ -24,9 +24,6 @@ include 'database.php';
       $sql = 'CREATE TABLE IF NOT EXISTS public (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) NOT NULL UNIQUE, likes INT NOT NULL DEFAULT "0", who_liked TEXT, views INT NOT NULL DEFAULT "0", who_viewed TEXT, blocked TEXT, who_blocked TEXT, visited TEXT);';
       $conn->exec($sql);
       echo "public table created\n";
-      $sql = 'CREATE TABLE IF NOT EXISTS chat (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, username varchar(30) NOT NULL, posted_on datetime NOT NULL, message text NOT NULL, color varchar(7) DEFAULT "#000000");';
-      $conn->exec($sql);
-      echo "chat table created\n";
 /*
       if (is_dir('uploads')) {
           function Delete($path)

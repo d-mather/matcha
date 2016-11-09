@@ -66,7 +66,8 @@ try {
         }
     }
 
-    $sql2 = $conn->prepare('SELECT username, who_liked, who_blocked FROM `public`');
+    $chat_stat = '';
+    $sql2 = $conn->prepare('SELECT username, who_liked, who_blocked, blocked FROM `public`');
     $sql2->execute();
     while ($result = $sql2->fetch(PDO::FETCH_ASSOC)) {
         if ($result['username'] == $blocked_user) {
@@ -77,7 +78,7 @@ try {
             }
         }
         if ($result['username'] == $user) {
-            if ($result['who_blocked'] != null && (!strstr($result['who_blocked'], $user) || !strstr($result['blocked'], $user))) {
+            if ($result['who_blocked'] != null && !strstr($result['blocked'], $user)) {
                 $chat_stat = 2;
                 break;
             }

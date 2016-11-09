@@ -91,7 +91,7 @@ function goBack() {
        <a class="links" href="setup_profile.php">Account Setup</a>
                 <div style="float: right; width: 170px;">
          <form method="get" action="logout.php">
-                     <?php session_start(); echo $_SESSION['logged_on_user'].':'; ?>
+                     <?php echo $_SESSION['logged_on_user'].':'; ?>
            <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
                   </form>
          <p class="cright">
