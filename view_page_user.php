@@ -40,12 +40,13 @@ try {
             $v_fame = $v_likes + $v_views;
         }
     }
-    $sql = $conn->prepare('SELECT username, fname, lname FROM `users`');
+    $sql = $conn->prepare('SELECT username, fname, lname, active FROM `users`');
     $sql->execute();
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
         if ($result['username'] == $v_username) {
             $v_fname = $result['fname'];
             $v_lname = $result['lname'];
+            $v_active = $result['active'];
         }
     }
     $v_pic_path_and_name1 = '';
@@ -113,6 +114,7 @@ function goBack() {
     <div id="viewer">
       <p style="line-height: 50px;">
         <u>Username:</u> &nbsp <?php echo $v_username; ?> <br />
+        <u>Activity:</u> &nbsp <?php if ($v_active == "online") echo $v_active; else echo "last seen on: " . $v_active; ?> <br />
         <u>Fame Rating:</u> &nbsp <?php echo $v_fame.' awesomness!'; ?> <br />
         <u>Full Name:</u> &nbsp <?php echo $v_fname.' '.$v_lname; ?> <br />
         <u>Age:</u> &nbsp <?php echo $v_age; ?> <br />

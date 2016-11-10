@@ -8,6 +8,7 @@ if (!$_POST['userin'] || !$_POST['pwdin']) {
     die(json_encode($response));
 }
     $login = $_POST['userin'];
+    $active = "online";
     $hashed_pwd = hash('whirlpool', $_POST['pwdin']);
     try {
         $DB_DSN = $DB_DSN.';dbname=matcha';
@@ -26,6 +27,9 @@ if (!$_POST['userin'] || !$_POST['pwdin']) {
                     $_SESSION['first_name'] = $result['fname'];
                     $_SESSION['last_name'] = $result['lname'];
 
+                    $sql = $conn->prepare('UPDATE `users` SET active=? WHERE username=?');
+                    $sql->execute([$active, $login]);
+
                     $response = array('meta' => 1, 'status' => true, 'statusMsg' => '<p class="success">Login successful</p>');
                     die(json_encode($response));
                 } else {
@@ -33,6 +37,9 @@ if (!$_POST['userin'] || !$_POST['pwdin']) {
                     $_SESSION['logged_on_user'] = $login;
                     $_SESSION['first_name'] = $result['fname'];
                     $_SESSION['last_name'] = $result['lname'];
+                    
+                    $sql = $conn->prepare('UPDATE `users` SET active=? WHERE username=?');
+                    $sql->execute([$active, $login]);
 
                     $response = array('meta' => $result['meta'], 'status' => true, 'statusMsg' => '<p class="success">Login successful</p>');
                     die(json_encode($response));

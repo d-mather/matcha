@@ -29,9 +29,6 @@ try {
         echo 'exists';
     } else {
         $new_table_name = $login.'+'.$chat_with;
-        $foo = 'CREATE TABLE ? (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, username varchar(30) NOT NULL, posted_on datetime NOT NULL, message text NOT NULL);';
-        $sql = $conn->prepare($foo);
-        $sql->execute([$new_table_name]);
         $target_table = $new_table_name;
         echo $new_table_name.'<br>';
         echo 'didn\'t exists, but does now!';
