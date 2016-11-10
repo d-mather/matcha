@@ -51,6 +51,18 @@ try {
 
 <header id="header">
   <p style="margin-left:20px;margin-top:20px;">Account Setup:</p>
+  <div id="header" style="height:35px;top:65px;">
+  <button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
+  <button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
+  <script>
+  function goForward() {
+      window.history.forward();
+  }
+  function goBack() {
+    window.history.back();
+  }
+  </script>
+  </div>
 </header>
 
 <section id="container">
@@ -77,15 +89,15 @@ try {
 
     <form id="profile" name="SetupProfile" method="post" enctype="multipart/form-data">
       <p style="color:#9C0234">First Name:</p><br />
-      <input type="text" name="fname" id="fname" maxlength="30" required value="<?php session_start(); echo $_SESSION['first_name']; ?>">
+      <input type="text" name="fname" id="fname" maxlength="30" required value="<?php echo $_SESSION['first_name']; ?>">
       <br />
       <br />
       <p style="color:#9C0234">Last Name:</p><br />
-      <input type="text" name="lname" id="lname" maxlength="30" required value="<?php session_start(); echo $_SESSION['last_name']; ?>">
+      <input type="text" name="lname" id="lname" maxlength="30" required value="<?php echo $_SESSION['last_name']; ?>">
       <br />
       <br />
       <p style="color:#9C0234">Email:</p><br />
-      <input type="email" name="email" id="email" maxlength="50" required value="<?php session_start(); echo $_SESSION['email']; ?>">
+      <input type="email" name="email" id="email" maxlength="50" required value="<?php echo $_SESSION['email']; ?>">
       <br />
       <br />
       <p style="color:#9C0234">Gender:</p><br />
@@ -137,7 +149,7 @@ try {
 <footer id="footer">
 
  <button onclick="document.getElementById('id01').style.display='block'"
- class="w3-btn">more options</button>
+ class="w3-btn">Options</button>
   <div id="id01" class="w3-modal" style="display: none">
    <div class="w3-modal-content">
 
@@ -165,7 +177,7 @@ try {
 
                 <div style="float: right; width: 170px;">
                   <form method="get" action="logout.php">
-                     <?php session_start(); echo $_SESSION['logged_on_user'].':'; ?>
+                     <?php echo $_SESSION['logged_on_user'].':'; ?>
                      <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
                   </form>
                   <p class="cright">

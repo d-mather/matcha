@@ -39,9 +39,21 @@ try {
 
 	<body>
 <header id="header">
-  <p style="margin-left:10px;margin-top:10px;"> <img id="pro_pic" src="<?php if ($profile_pic) {
+  <p style="margin-left:10px;margin-top:10px;"> <a href="home.php"> <img id="pro_pic" src="<?php if ($profile_pic) {
     echo $profile_pic;
-} ?>"> Hi <?php echo $_SESSION['first_name'].'!'; ?> </p>
+} ?>"> </a> Hi <?php echo $_SESSION['first_name'].'!'; ?> </p>
+<div id="header" style="height:35px;top:65px;">
+<button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
+<button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
+<script>
+function goForward() {
+    window.history.forward();
+}
+function goBack() {
+  window.history.back();
+}
+</script>
+</div>
 </header>
 
 <section id="container">
@@ -53,7 +65,7 @@ try {
 <footer id="footer">
 
  <button onclick="document.getElementById('id01').style.display='block'"
- class="w3-btn">more options</button>
+ class="w3-btn">Options</button>
   <div id="id01" class="w3-modal" style="display: none">
    <div class="w3-modal-content">
 
@@ -79,7 +91,7 @@ try {
        <a class="links" href="setup_profile.php">Account Setup</a>
                 <div style="float: right; width: 170px;">
          <form method="get" action="logout.php">
-                     <?php session_start(); echo $_SESSION['logged_on_user'].':'; ?>
+                     <?php echo $_SESSION['logged_on_user'].':'; ?>
            <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
                   </form>
          <p class="cright">

@@ -113,6 +113,19 @@ h3 {
     color: #d6085a;
 }
 
+u {
+    color: #a30642;
+}
+
+#viewer {
+    float: left;
+    width: 50%;
+    text-align: center;
+    font-family: Baloo Bhai;
+    font-size: 35px;
+    color: #b218a3;
+}
+
 #profile {
     line-height: 40px;
     width: 50%;
@@ -210,6 +223,7 @@ progress[value]::before {
 
 .w3-btn {
     background-color: #e8d1d0;
+    font-family: Lalezar;
     color: green;
     border-radius: 20px;
 }
