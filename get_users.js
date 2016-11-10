@@ -102,7 +102,7 @@ function chat_user(tmp) {
                 console.log(temp);
 
                 if (response.status == true) {
-                    window.location("chat_index.php");
+                    window.location = String("chat_index.php?chat_with=" + user);
                 } else {
                     displayError(response.statusMsg);
                 }

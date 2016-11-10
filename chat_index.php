@@ -1,175 +1,66 @@
+<?php
+
+session_start();
+
+if ($_SESSION['logged_on_user'] == '' || !$_SESSION['logged_on_user']) {
+    return(header("LOCATION: index.php"));
+}
+
+$login = $_SESSION['logged_on_user'];
+$chat_with = $_GET['chat_with'];
+
+?>
+
 <html>
-<head>
-	<title>Messenger</title>
-	<style type="text/css">
-	html {
-		height: 100%;
-	}
-	body {
-		margin: 0px;
-		padding: 0px;
-		height: 100%;
-		font-family: Helvetica, Arial, Sans-serif;
-		font-size: 14px;
-	}
-	.msg-container {
-		width: 100%;
-		height: 100%;
-	}
-	.header {
-		width: 100%;
-		height: 30px;
-		border-bottom: 1px solid #CCC;
-		text-align: center;
-		padding: 15px 0px 5px;
-		font-size: 20px;
-		font-weight: normal;
-	}
-	.msg-area {
-		height: calc(100% - 102px);
-		width: 100%;
-		background-color:#FFF;
-		overflow-y: scroll;
-	}
-	.msginput {
-		padding: 5px;
-		margin: 10px;
-		font-size: 14px;
-		width: calc(100% - 20px);
-		outline: none;
-	}
-	.bottom {
-		width: 100%;
-		height: 50px;
-		position: fixed;
-		bottom: 0px;
-		border-top: 1px solid #CCC;
-		background-color: #EBEBEB;
-	}
-	#whitebg {
-		width: 100%;
-		height: 100%;
-		background-color: #FFF;
-		overflow-y: scroll;
-		opacity: 0.6;
-		display: none;
-		position: absolute;
-		top: 0px;
-		z-index: 1000;
-	}
-	#loginbox {
-		width: 600px;
-		height: 350px;
-		border: 1px solid #CCC;
-		background-color: #FFF;
-		position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-		z-index: 1001;
-		display: none;
-	}
-	h1 {
-		padding: 0px;
-		margin: 20px 0px 0px 0px;
-		text-align: center;
-		font-weight: normal;
-	}
-	button {
-		background-color: #43ACEC;
-		border: none;
-		color: #FFF;
-		font-size: 16px;
-		margin: 0px auto;
-		width: 150px;
-	}
-	.buttonp {
-		width: 150px;
-		margin: 0px auto;
-	}
-	.msg {
-		margin: 10px 10px;
-		background-color: #f1f0f0;
-		max-width: calc(45% - 20px);
-		color: #000;
-		padding: 10px;
-		font-size: 14px;
-	}
-	.msgfrom {
-		background-color: #0084ff;
-		color: #FFF;
-		margin: 10px 10px 10px 55%;
-	}
-	.msgarr {
-		width: 0;
-		height: 0;
-		border-left: 8px solid transparent;
-		border-right: 8px solid transparent;
-		border-bottom: 8px solid #f1f0f0;
-		transform: rotate(315deg);
-		margin: -12px 0px 0px 45px;
-	}
-	.msgarrfrom {
-		border-bottom: 8px solid #0084ff;
-		float: right;
-		margin-right: 45px;
-	}
-	.msgsentby {
-		color: #8C8C8C;
-		font-size: 12px;
-		margin: 4px 0px 0px 10px;
-	}
-	.msgsentbyfrom {
-		float: right;
-		margin-right: 12px;
-	}
-	</style>
-</head>
-<body onload="checkcookie(); update();">
-<div id="whitebg"></div>
-<div id="loginbox">
-<h1>Pick a username:</h1>
-<p><input type="text" name="pickusername" id="cusername" placeholder="Pick a username" class="msginput"></p>
-<p class="buttonp"><button onclick="chooseusername()">Choose Username</button></p>
-</div>
+	<head>
+			<title>Matcha</title>
+			<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+			<link href="https://fonts.googleapis.com/css?family=Baloo+Bhai|Lalezar|Ruslan+Display" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=Bungee+Inline|Chewy|Russo+One" rel="stylesheet">
+	  	<link rel="stylesheet" href="css/modulr.css" />
+			<link rel="stylesheet" type="text/css" href="css/all_styles.css">
+	</head>
+
+<body onload="focus(); update();">
+	<div id="login" style="display:hidden"><?php echo $login; ?></div>
+	<div id="chat_with" style="display:hidden"><?php echo $chat_with; ?></div>
+
 <div class="msg-container">
-	<div class="header">Messenger</div>
-	<div class="msg-area" id="msg-area"></div>
-	<div class="bottom"><input type="text" name="msginput" class="msginput" id="msginput" onkeydown="if (event.keyCode == 13) sendmsg()" value="" placeholder="Enter your message here ... (Press enter to send message)"></div>
+
+	<header id="header">
+	  <p style="margin-left:10px;margin-top:10px;"> <a href="home.php"> <img id="pro_pic" src="<?php if ($_SESSION['pro_pic']) {
+	    echo $_SESSION['pro_pic'];
+	} ?>"> </a> Chat with <?php echo $chat_with.':'; ?> </p>
+	<div id="header" style="height:35px;top:65px;">
+	<button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
+	<button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
+	<script>
+	function goForward() {
+	    window.history.forward();
+	}
+	function goBack() {
+	  window.history.back();
+	}
+	</script>
+	</div>
+	</header>
+
+	<div class="msg-area" id="msg-area">
+	</div>
+	<div class="bottom"><input type="text" name="msginput" class="msginput" id="msginput" onkeydown="if (event.keyCode == 13) sendmsg()" value="" placeholder="Enter your message here ... (Press enter to send message)">
+	</div>
 </div>
+
 <script type="text/javascript">
 var msginput = document.getElementById("msginput");
 var msgarea = document.getElementById("msg-area");
-function chooseusername() {
-	var user = document.getElementById("cusername").value;
-	document.cookie="messengerUname=" + user
-	checkcookie()
+
+function focus() {
+  document.getElementById("msginput").focus();
 }
-function showlogin() {
-	document.getElementById("whitebg").style.display = "inline-block";
-	document.getElementById("loginbox").style.display = "inline-block";
-}
-function hideLogin() {
-	document.getElementById("whitebg").style.display = "none";
-	document.getElementById("loginbox").style.display = "none";
-}
-function checkcookie() {
-	if (document.cookie.indexOf("messengerUname") == -1) {
-		showlogin();
-	} else {
-		hideLogin();
-	}
-}
-function getcookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
-    }
-    return "";
-}
+
 function escapehtml(text) {
   return text
       .replace(/&/g, "&amp;")
@@ -178,9 +69,10 @@ function escapehtml(text) {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
 }
+
 function update() {
-	var xmlhttp=new XMLHttpRequest();
-	var username = getcookie("messengerUname");
+	var xmlhttp = new XMLHttpRequest();
+	var username = document.getElementById("login").value;console.log(username);
 	var output = "";
 		xmlhttp.onreadystatechange=function() {
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
@@ -201,28 +93,75 @@ function update() {
 				msgarea.scrollTop = msgarea.scrollHeight;
 			}
 		}
-	      xmlhttp.open("GET","get_messages.php?username=" + username,true);
+	      xmlhttp.open("POST", "get_messages.php?sender=" + username + "&reciever=" + reciever, true);
 	      xmlhttp.send();
 }
+
 function sendmsg() {
 	var message = msginput.value;
 	if (message != "") {
-		// alert(msgarea.innerHTML)
-		// alert(getcookie("messengerUname"))
-		var username = getcookie("messengerUname");
+		var username = document.getElementById("chat_with").value;console.log(username);
 		var xmlhttp=new XMLHttpRequest();
 		xmlhttp.onreadystatechange=function() {
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 				message = escapehtml(message)
 				msgarea.innerHTML += "<div class=\"msgc\" style=\"margin-bottom: 30px;\"> <div class=\"msg msgfrom\">" + message + "</div> <div class=\"msgarr msgarrfrom\"></div> <div class=\"msgsentby msgsentbyfrom\">Sent by " + username + "</div> </div>";
+				msgarea.scrollTop = msgarea.scrollHeight;
 				msginput.value = "";
 			}
 		}
-	      xmlhttp.open("GET","update_messages.php?username=" + username + "&message=" + message,true);
+	      xmlhttp.open("POST", "update_messages.php?sender=" + username + "&reciever=" + reciever + "&message=" + message, true);
 	      xmlhttp.send();
   	}
 }
-setInterval(function(){ update() }, 2500);
+
+//setInterval(function(){ update() }, 2500);
+
 </script>
+
+<footer id="footer">
+
+ <button onclick="document.getElementById('id01').style.display='block'"
+ class="w3-btn">Options</button>
+  <div id="id01" class="w3-modal" style="display: none">
+   <div class="w3-modal-content">
+
+     <div class="w3-container">
+       <button onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn">Close tray</button>
+       <div>
+
+                <div style="float: left; width: 400px;">
+                    <form method="post" id="delAccForm" enctype="application/x-www-form-urlencoded">
+                        Delete Account:
+                        <input type="password" style="background-color: Yellow;" id="delAccPwd" placeholder="password">
+                        <input id="delacc" type="submit" style="background-color: #FE0001;" name="delaccount" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account?')">
+                    </form>
+                </div>
+                <div style="float: left; width: 550px;">
+                    <form id="modifyForm" method="post" enctype="application/x-www-form-urlencoded">
+             Change Password:
+             <input type="password" style="background-color: #015a5b;" id="oldpw" name="oldpwd" placeholder="old password">
+             <input type="password" style="background-color: #073d00;" id="newpw" name="newpwd" placeholder="new password">
+             <input type="submit" style="background-color: #FE0001;" name="submit" value="Change Password">
+           </form>
+                </div>
+       <a class="links" href="setup_profile.php">Account Setup</a>
+       <a class="links" href="home.php">Home</a>
+                <div style="float: right; width: 170px;">
+         <form method="get" action="logout.php">
+                     <?php echo $_SESSION['logged_on_user'].':'; ?>
+           <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
+                  </form>
+         <p class="cright">
+                         <a class="cright" href="https://za.linkedin.com/in/dillon-mather-a0061b128">&#169; Dillon Mather | Matcha | 2016</a>
+                 </p>
+       </div>
+     </div>
+
+ </div>
+</div>
+
+</footer>
+
 </body>
 </html>

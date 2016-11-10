@@ -233,3 +233,96 @@ progress[value]::before {
     color: red;
     border-radius: 20px;
 }
+
+
+/* -------------------------------------------------------------------------- */
+
+.msg-container {
+    width: 90%;
+    margin-top: 140px;
+    height: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.msg-area-whole {
+    height: calc(100% - 102px);
+    width: 100%;
+    background-color: rgba(33, 24, 29, 0.8);
+    overflow-y: scroll;
+}
+
+.msg-area {
+    height: calc(100% - 102px);
+    width: 100%;
+    border: 4px solid rgba(33, 24, 29, 0.8);
+    background-color: rgba(33, 24, 29, 0.8);
+    overflow-y: scroll;
+}
+
+.msginput {
+    padding: 5px;
+    margin: 10px;
+    font-size: 14px;
+    width: calc(100% - 20px);
+    outline: none;
+    background-color: #e8d1d0;
+    font-family: Baloo Bhai;
+    font-size: 20px;
+    color: #7105ba;
+}
+
+.bottom {
+    width: 100%;
+    height: 50px;
+    background-color: rgba(33, 24, 29, 0.9);
+}
+
+.msg {
+    margin: 10px 10px;
+    background-color: #ff35f1;
+    max-width: calc(45% - 20px);
+    color: #7105ba;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.msgfrom {
+    width: 40%;
+    background-color: #7105ba;
+    color: #ff35f1;
+    margin: 10px 5px 10px 55%;
+    padding-right: 5px;
+    word-wrap: break-word;
+}
+
+.msgarr {
+    width: 40%;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #f1f0f0;
+    transform: rotate(315deg);
+    margin: -12px 0px 0px 45px;
+}
+
+.msgarrfrom {
+    border-bottom: 8px solid #7105ba;
+    color: #ff35f1;
+    float: right;
+    margin-right: 250px;
+}
+
+.msgsentby {
+    width: 40%;
+    color: #8C8C8C;
+    font-size: 12px;
+    margin: 4px 0px 0px 10px;
+}
+
+.msgsentbyfrom {
+    float: right;
+    margin-right: 0px;
+    width: 300px;
+}

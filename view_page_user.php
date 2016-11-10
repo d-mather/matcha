@@ -3,6 +3,10 @@
 include 'config/database.php';
 session_start();
 
+if ($_SESSION['logged_on_user'] == '' || !$_SESSION['logged_on_user']) {
+    return(header("LOCATION: index.php"));
+}
+
 try {
     $login = $_SESSION['logged_on_user'];
     $v_username = $_GET['viewing'];

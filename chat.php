@@ -3,9 +3,8 @@
 include 'config/database.php';
 session_start();
 
-$chat_with = 'zxcv'; //$_POST['chat_with'];
-$login = 'admin'; //$_SESSION['logged_on_user'];
-$table_exists = false;
+$chat_with = $_POST['chat_with'];
+$login = $_SESSION['logged_on_user'];
 
 try {
     $DB_DSN = $DB_DSN.';dbname=matcha';
@@ -24,18 +23,9 @@ try {
             }
         }
     }
-    if ($table_exists == true) {
-        $target_table = $table_name;
-        echo 'exists';
-    } else {
-        $new_table_name = $login.'+'.$chat_with;
-        $target_table = $new_table_name;
-        echo $new_table_name.'<br>';
-        echo 'didn\'t exists, but does now!';
-    }
 
-  //  $response = array('status' => true, 'target_table' => $target_table);
-  //  die(json_encode($response));
+    $response = array('status' => true, 'target_table' => $target_table);
+    die(json_encode($response));
 } catch (PDOException $e) {
     $response = array('status' => false, 'statusMsg' => '<p class="danger">Unfortunately there was an error: '.$e.'</p>');
     die(json_encode($response));

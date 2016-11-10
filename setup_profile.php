@@ -3,6 +3,10 @@
 session_start();
 include './config/database.php';
 
+if ($_SESSION['logged_on_user'] == '' || !$_SESSION['logged_on_user']) {
+    return(header("LOCATION: index.php"));
+}
+
 try {
     $DB_DSN = $DB_DSN.';dbname=matcha';
     $conn = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
