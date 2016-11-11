@@ -99,9 +99,9 @@ function chat_user(tmp) {
             ajax_post("chat.php", data, function(httpRequest) {
                 let response = JSON.parse(httpRequest.responseText);
                 var temp = String("chat with: " + user);
-                console.log(temp);
 
                 if (response.status == true) {
+                    console.log(temp);
                     window.location = String("chat_index.php?chat_with=" + user);
                 } else {
                     displayError(response.statusMsg);

@@ -27,6 +27,7 @@ body {
     transition: color 1s;
     height: 100px;
     position: fixed;
+    z-index: 1;
 }
 
 #container {
@@ -47,7 +48,6 @@ body {
     font-family: Lalezar;
     font-size: 15px;
     background-color: rgba(33, 24, 29, 0.8);
-    /*  background-image: url("http://www.hdwallpaper.nu/wp-content/uploads/2015/02/Elegant-Taylor-Swift-2015.jpg");*/
     text-align: center;
     margin-bottom: 0;
     width: 100%;
@@ -234,9 +234,6 @@ progress[value]::before {
     border-radius: 20px;
 }
 
-
-/* -------------------------------------------------------------------------- */
-
 .msg-container {
     width: 90%;
     margin-top: 140px;
@@ -302,8 +299,9 @@ progress[value]::before {
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid #f1f0f0;
+    border-bottom: 8px solid #ff35f1;
     transform: rotate(315deg);
+    position: static;
     margin: -12px 0px 0px 45px;
 }
 

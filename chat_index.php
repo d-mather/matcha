@@ -6,9 +6,6 @@ if ($_SESSION['logged_on_user'] == '' || !$_SESSION['logged_on_user']) {
     return(header("LOCATION: index.php"));
 }
 
-$login = $_SESSION['logged_on_user'];
-$chat_with = $_GET['chat_with'];
-
 ?>
 
 <html>
@@ -24,15 +21,13 @@ $chat_with = $_GET['chat_with'];
 	</head>
 
 <body onload="focus(); update();">
-	<div id="login" style="display:hidden"><?php echo $login; ?></div>
-	<div id="chat_with" style="display:hidden"><?php echo $chat_with; ?></div>
 
 <div class="msg-container">
 
 	<header id="header">
 	  <p style="margin-left:10px;margin-top:10px;"> <a href="home.php"> <img id="pro_pic" src="<?php if ($_SESSION['pro_pic']) {
 	    echo $_SESSION['pro_pic'];
-	} ?>"> </a> Chat with <?php echo $chat_with.':'; ?> </p>
+	} ?>"> </a> Chat with <?php print $_GET['chat_with']; ?>:</p>
 	<div id="header" style="height:35px;top:65px;">
 	<button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
 	<button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
@@ -56,66 +51,66 @@ $chat_with = $_GET['chat_with'];
 <script type="text/javascript">
 var msginput = document.getElementById("msginput");
 var msgarea = document.getElementById("msg-area");
+var chat_with = window.location.search.substring(1).split('=')[1];
 
 function focus() {
-  document.getElementById("msginput").focus();
+    document.getElementById("msginput").focus();
 }
 
 function escapehtml(text) {
-  return text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 function update() {
-	var xmlhttp = new XMLHttpRequest();
-	var username = document.getElementById("login").value;console.log(username);
-	var output = "";
-		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				var response = xmlhttp.responseText.split("\n")
-				var rl = response.length
-				var item = "";
-				for (var i = 0; i < rl; i++) {
-					item = response[i].split("\\")
-					if (item[1] != undefined) {
-						if (item[0] == username) {
-							output += "<div class=\"msgc\" style=\"margin-bottom: 30px;\"> <div class=\"msg msgfrom\">" + item[1] + "</div> <div class=\"msgarr msgarrfrom\"></div> <div class=\"msgsentby msgsentbyfrom\">Sent by " + item[0] + "</div> </div>";
-						} else {
-							output += "<div class=\"msgc\"> <div class=\"msg\">" + item[1] + "</div> <div class=\"msgarr\"></div> <div class=\"msgsentby\">Sent by " + item[0] + "</div> </div>";
-						}
-					}
-				}
-				msgarea.innerHTML = output;
-				msgarea.scrollTop = msgarea.scrollHeight;
-			}
-		}
-	      xmlhttp.open("POST", "get_messages.php?sender=" + username + "&reciever=" + reciever, true);
-	      xmlhttp.send();
+    var xmlhttp = new XMLHttpRequest();
+    var output = "";
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var response = xmlhttp.responseText.split("\n")
+            var rl = response.length
+            var item = "";
+            for (var i = 0; i < rl; i++) {
+                item = response[i].split("\\");
+                if (item[2] != undefined && item[1] != undefined && item[0] != undefined && chat_with) {
+                    if (item[0] == chat_with) {
+                        output += "<div class=\"msgc\"> <div class=\"msg\">" + item[2] + "</div> <div class=\"msgarr\"></div> <div class=\"msgsentby\">Sent by " + item[0] + "</div> </div>";
+                    } else {
+                        output += "<div class=\"msgc\" style=\"margin-bottom: 30px;\"> <div class=\"msg msgfrom\">" + item[2] + "</div> <div class=\"msgarr msgarrfrom\"></div> <div class=\"msgsentby msgsentbyfrom\">Sent by You</div> </div>";
+                    }
+                }
+            }
+            if (output)
+                msgarea.innerHTML = output;
+            msgarea.scrollTop = msgarea.scrollHeight;
+        }
+    }
+    xmlhttp.open("GET", "get_messages.php?reciever=" + chat_with, true);
+    xmlhttp.send();
 }
 
 function sendmsg() {
-	var message = msginput.value;
-	if (message != "") {
-		var username = document.getElementById("chat_with").value;console.log(username);
-		var xmlhttp=new XMLHttpRequest();
-		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				message = escapehtml(message)
-				msgarea.innerHTML += "<div class=\"msgc\" style=\"margin-bottom: 30px;\"> <div class=\"msg msgfrom\">" + message + "</div> <div class=\"msgarr msgarrfrom\"></div> <div class=\"msgsentby msgsentbyfrom\">Sent by " + username + "</div> </div>";
-				msgarea.scrollTop = msgarea.scrollHeight;
-				msginput.value = "";
-			}
-		}
-	      xmlhttp.open("POST", "update_messages.php?sender=" + username + "&reciever=" + reciever + "&message=" + message, true);
-	      xmlhttp.send();
-  	}
+    var message = msginput.value;
+    if (message != "" && chat_with) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                message = escapehtml(message)
+                msgarea.innerHTML += "<div class=\"msgc\" style=\"margin-bottom: 30px;\"> <div class=\"msg msgfrom\">" + message + "</div> <div class=\"msgarr msgarrfrom\"></div> <div class=\"msgsentby msgsentbyfrom\">Sent by You</div> </div>";
+                msgarea.scrollTop = msgarea.scrollHeight;
+                msginput.value = "";
+            }
+        }
+        xmlhttp.open("GET", "update_messages.php?reciever=" + chat_with + "&message=" + message, true);
+        xmlhttp.send();
+    }
 }
 
-//setInterval(function(){ update() }, 2500);
+//setInterval(function() { update() }, 2500);
 
 </script>
 
