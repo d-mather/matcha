@@ -16,9 +16,9 @@ try {
         if ($result['username'] == $user) {
             $visited = $result['visited'];
             if (!$visited) {
-                $visited = $viewed."\n";
+                $visited = '<option value="http://localhost:8080/matcha/view_page_user.php?viewing='.$viewed.'">'.$viewed."</option>\n";
             } else {
-                $visited = $visited.$viewed."\n";
+                $visited = $visited.'<option value="http://localhost:8080/matcha/view_page_user.php?viewing='.$viewed.'">'.$viewed."</option>\n";
             }
             $sql1 = $conn->prepare('UPDATE `public` SET visited=? WHERE username=?');
             $sql1->execute([$visited, $user]);

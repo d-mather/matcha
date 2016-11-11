@@ -282,6 +282,7 @@ progress[value]::before {
     color: #7105ba;
     padding: 10px;
     font-size: 14px;
+    border-radius: 20px;
 }
 
 .msgfrom {
@@ -291,6 +292,7 @@ progress[value]::before {
     margin: 10px 5px 10px 55%;
     padding-right: 5px;
     word-wrap: break-word;
+    border-radius: 20px;
 }
 
 .msgarr {
@@ -323,4 +325,72 @@ progress[value]::before {
     float: right;
     margin-right: 0px;
     width: 300px;
+}
+
+.dropdown:hover {
+    background-color: rgba(33, 24, 29, 0.8);
+}
+
+.dropbtn {
+    color: green;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    height: 35px;
+    background-color: transparent;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    height: 35px;
+    float: right;
+    margin-top: -5px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(33, 24, 29, 0.8);
+    color: green;
+    font-size: 12px;
+    text-align: center;
+    min-width: 160px;
+    overflow: auto;
+    right: 0;
+}
+
+.dropdown-contents {
+    display: none;
+    position: absolute;
+    background-color: rgba(33, 24, 29, 0.8);
+    color: green;
+    font-size: 12px;
+    text-align: center;
+    min-width: 160px;
+    overflow: auto;
+    right: 0;
+}
+
+.dropdown-contents p {
+    color: green;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content option {
+    color: green;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {
+    background-color: #e8d1d0;
+    color: black;
+}
+
+.show {
+    display: block;
 }

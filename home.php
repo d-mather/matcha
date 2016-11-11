@@ -4,7 +4,7 @@ include 'config/database.php';
 session_start();
 
 if ($_SESSION['logged_on_user'] == '' || !$_SESSION['logged_on_user']) {
-    return(header("LOCATION: index.php"));
+    return header('LOCATION: index.php');
 }
 
 try {
@@ -19,6 +19,13 @@ try {
         if ($result['username'] == $login && $result['pic_number'] == 1) {
             $profile_pic = $result['pic_path_and_name'];
             $_SESSION['pro_pic'] = $profile_pic;
+        }
+    }
+    $sql = $conn->prepare('SELECT username, visited FROM `public`');
+    $sql->execute();
+    while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $login) {
+            $visited = $result['visited'];
         }
     }
 } catch (PDOException $e) {
@@ -45,19 +52,42 @@ try {
 <header id="header">
   <p style="margin-left:10px;margin-top:10px;"> <a href="home.php"> <img id="pro_pic" src="<?php if ($profile_pic) {
     echo $profile_pic;
-} ?>"> </a> Hi <?php echo $_SESSION['first_name'].'!'; ?> </p>
-<div id="header" style="height:35px;top:65px;">
-<button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
-<button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
-<script>
-function goForward() {
-    window.history.forward();
-}
-function goBack() {
-  window.history.back();
-}
-</script>
-</div>
+} ?>"> </a> Hi <?php echo $_SESSION['first_name'].'!'; ?>
+  </p>
+
+  <div id="header" style="height:35px;top:65px;">
+    <button class="w3-btn" onclick="goBack()" style="font-size:20px">Go Back</button>
+    <button class="w3-btn" onclick="goForward()" style="font-size:20px">Forward</button>
+    <script>
+      function goForward() {
+          window.history.forward();
+      }
+      function goBack() {
+        window.history.back();
+      }
+      function view_dropdown() {
+          document.getElementById("visitDropdown").classList.toggle("show");
+      }
+      function notify_dropdown() {
+          document.getElementById("notifyDropdown").classList.toggle("show");
+      }
+    </script>
+
+    <div class="dropdown">
+    <button onclick="view_dropdown();" class="dropbtn">Visit History</button>
+      <select size="10" onchange="location = this.value;" id="visitDropdown" class="dropdown-content">
+          <?php echo $visited; ?>
+      </select>
+    </div>
+
+    <div class="dropdown">
+    <button onclick="notify_dropdown();" class="dropbtn">Notifications</button>
+      <div id="notifyDropdown" class="dropdown-contents">
+        <p>hello world</p>
+      </div>
+    </div>
+
+  </div>
 </header>
 
 <section id="container">
@@ -77,73 +107,39 @@ function goBack() {
        <button onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn">Close tray</button>
        <div>
 
-                <div style="float: left; width: 400px;">
-                    <form method="post" id="delAccForm" enctype="application/x-www-form-urlencoded">
-                        Delete Account:
-                        <input type="password" style="background-color: Yellow;" id="delAccPwd" placeholder="password">
-                        <input id="delacc" type="submit" style="background-color: #FE0001;" name="delaccount" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account?')">
-                    </form>
-                </div>
-                <div style="float: left; width: 550px;">
-                    <form id="modifyForm" method="post" enctype="application/x-www-form-urlencoded">
-             Change Password:
-             <input type="password" style="background-color: #015a5b;" id="oldpw" name="oldpwd" placeholder="old password">
-             <input type="password" style="background-color: #073d00;" id="newpw" name="newpwd" placeholder="new password">
-             <input type="submit" style="background-color: #FE0001;" name="submit" value="Change Password">
-           </form>
-                </div>
+          <div style="float: left; width: 400px;">
+              <form method="post" id="delAccForm" enctype="application/x-www-form-urlencoded">
+                  Delete Account:
+                  <input type="password" style="background-color: Yellow;" id="delAccPwd" placeholder="password">
+                  <input id="delacc" type="submit" style="background-color: #FE0001;" name="delaccount" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account?')">
+              </form>
+          </div>
+
+          <div style="float: left; width: 550px;">
+              <form id="modifyForm" method="post" enctype="application/x-www-form-urlencoded">
+                Change Password:
+                <input type="password" style="background-color: #015a5b;" id="oldpw" name="oldpwd" placeholder="old password">
+                <input type="password" style="background-color: #073d00;" id="newpw" name="newpwd" placeholder="new password">
+                <input type="submit" style="background-color: #FE0001;" name="submit" value="Change Password">
+              </form>
+          </div>
+
        <a class="links" href="setup_profile.php">Account Setup</a>
-                <div style="float: right; width: 170px;">
-         <form method="get" action="logout.php">
-                     <?php echo $_SESSION['logged_on_user'].':'; ?>
-           <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
-                  </form>
-         <p class="cright">
-                         <a class="cright" href="https://za.linkedin.com/in/dillon-mather-a0061b128">&#169; Dillon Mather | Matcha | 2016</a>
-                 </p>
+
+        <div style="float: right; width: 170px;">
+          <form method="get" action="logout.php">
+              <?php echo $_SESSION['logged_on_user'].':'; ?>
+              <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
+          </form>
+          <p class="cright">
+             <a class="cright" href="https://za.linkedin.com/in/dillon-mather-a0061b128">&#169; Dillon Mather | Matcha | 2016</a>
+          </p>
        </div>
      </div>
 
- </div>
-</div>
+   </div>
+  </div>
 
 </footer>
-
-<!--
-<footer id="footer">
-
-				<div style="float: left;">
-					<form method="post" id="delAccForm" enctype="application/x-www-form-urlencoded">
-						Delete Account:
-						<input type="password" style="background-color: Yellow;" id="delAccPwd" placeholder="password">
-						<input id="delacc" type="submit" style="background-color: #FE0001;" name="delaccount" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account?')">
-					</form>
-				</div>
-
-				<div style="float: left;">
-					<form id="modifyForm" method="post" enctype="application/x-www-form-urlencoded">
-          	Change Password:
-          	<input type="password" style="background-color: #015a5b;" id="oldpw" name="oldpwd" placeholder="old password">
-          	<input type="password" style="background-color: #073d00;" id="newpw" name="newpwd" placeholder="new password">
-          	<input type="submit" style="background-color: #FE0001;" name="submit" value="Change Password">
-        	</form>
-				</div>
-
-        <a class="links" href="setup_profile.php">Account Setup</a>
-
-				<div style="float: right;">
-          <form method="get" action="logout.php">
-  					<?php /*session_start(); echo $_SESSION['logged_on_user'].':'; */?>
-            <input type="submit" style="background-color: #FE0001;" name="lout" value="logout">
-				  </form>
-
-          <p class="cright">
-  						<a class="cright" href="https://za.linkedin.com/in/dillon-mather-a0061b128">&#169; Dillon Mather | Matcha | 2016</a>
-  				</p>
-
-        </div>
-
-</footer>
--->
 	</body>
 </html>
