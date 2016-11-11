@@ -90,7 +90,7 @@ window.onclick = function(event) {
 }
 
 window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
+    if (!event.target.matches('.dropbtns')) {
 
         var dropdowns = document.getElementsByClassName("dropdown-contents");
         var i;

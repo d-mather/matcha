@@ -12,12 +12,15 @@ try {
     $sender = stripslashes(htmlspecialchars($_SESSION['logged_on_user']));
     $message = stripslashes(htmlspecialchars($_GET['message']));
     if ($message == '' || $sender == '' || $reciever == '') {
-        die("error");
+        die('error');
     }
 
-    $result = $conn->prepare("INSERT INTO chat (sender, reciever, message) VALUES (?, ?, ?)");
-    $result->execute([$sender, $reciever, $message]);
+    $notification = 'New message from '.$sender.'!';
+    $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen) VALUES (?, ?, 0)');
+    $notify->execute([$reciever, $notification]);
 
+    $result = $conn->prepare('INSERT INTO chat (sender, reciever, message) VALUES (?, ?, ?)');
+    $result->execute([$sender, $reciever, $message]);
 } catch (PDOException $e) {
     echo $e;
 }

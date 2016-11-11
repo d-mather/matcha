@@ -340,6 +340,15 @@ progress[value]::before {
     background-color: transparent;
 }
 
+.dropbtns {
+    color: green;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    height: 35px;
+    background-color: transparent;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;

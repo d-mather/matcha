@@ -71,6 +71,17 @@ try {
       function notify_dropdown() {
           document.getElementById("notifyDropdown").classList.toggle("show");
       }
+
+setInterval(function() {
+      if(typeof(EventSource) !== "undefined") {
+          var source = new EventSource("notify.php");
+          source.onmessage = function(event) {
+              document.getElementById("notifyDropdown").innerHTML += event.data + "<br>";
+          };
+      } else {
+          document.getElementById("notifyDropdown").innerHTML = "Sorry, your browser does not support server-sent events...";
+      }
+    }, 2500);
     </script>
 
     <div class="dropdown">
@@ -81,9 +92,9 @@ try {
     </div>
 
     <div class="dropdown">
-    <button onclick="notify_dropdown();" class="dropbtn">Notifications</button>
+    <button onclick="notify_dropdown();" class="dropbtns">Notifications</button>
       <div id="notifyDropdown" class="dropdown-contents">
-        <p>hello world</p>
+
       </div>
     </div>
 

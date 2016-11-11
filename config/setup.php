@@ -24,9 +24,12 @@ include 'database.php';
       $sql = $conn->prepare('CREATE TABLE IF NOT EXISTS public (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) NOT NULL UNIQUE, likes INT NOT NULL DEFAULT "0", who_liked TEXT, views INT NOT NULL DEFAULT "0", who_viewed TEXT, blocked TEXT, who_blocked TEXT, visited TEXT);');
       $sql->execute();
       echo "public table created\n";
-      $sql = $conn->prepare("CREATE TABLE IF NOT EXISTS chat (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, sender varchar(30) NOT NULL, reciever varchar(30) NOT NULL, message TEXT NOT NULL);");
+      $sql = $conn->prepare('CREATE TABLE IF NOT EXISTS chat (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, sender varchar(30) NOT NULL, reciever varchar(30) NOT NULL, message TEXT NOT NULL);');
       $sql->execute();
       echo "chat table created\n";
+      $sql = $conn->prepare("CREATE TABLE IF NOT EXISTS notifications (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE, username varchar(30) NOT NULL, notify TEXT NOT NULL, seen INT NOT NULL DEFAULT '0');");
+      $sql->execute();
+      echo "notifications table created\n";
 /*
       if (is_dir('uploads')) {
           function Delete($path)
@@ -53,9 +56,9 @@ include 'database.php';
       }
 */
 date_default_timezone_set('Africa/Johannesburg');
-$date = date('d/m/Y');
-$time = date('h:i:sa');
-$active = $date . " " . $time;
+      $date = date('d/m/Y');
+      $time = date('h:i:sa');
+      $active = $date.' '.$time;
 
       $a_user = 'admin';
       $a_fname = 'Dillon';

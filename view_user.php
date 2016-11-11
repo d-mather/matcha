@@ -40,6 +40,10 @@ try {
         }
     }
 
+    $notification = 'Your profile has just been viewed by '.$user.'!';
+    $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen) VALUES (?, ?, 0)');
+    $notify->execute([$viewed, $notification]);
+
     $response = array('status' => true);
     die(json_encode($response));
 } catch (PDOException $e) {
