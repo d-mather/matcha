@@ -3,7 +3,7 @@
 include 'config/database.php';
 session_start();
 
-if ($_SESSION['logged_on_user'] == '' || !$_SESSION['logged_on_user']) {
+if (!$_SESSION['logged_on_user'] || $_SESSION['logged_on_user'] == '') {
     return header('LOCATION: index.php');
 }
 
@@ -100,7 +100,7 @@ setInterval(function() {
       } else {
           document.getElementById("notifyDropdown").innerHTML = "Sorry, your browser does not support server-sent events...";
       }
-    }, 2500);
+    }, 5000);
     </script>
 
     <div class="dropdown">
@@ -112,9 +112,9 @@ setInterval(function() {
 
     <div class="dropdown">
     <button onclick="notify_dropdown(); mark_read();" id="notifybtn" class="dropbtns">Notifications</button>
-      <div id="notifyDropdown" class="dropdown-contents">
+      <select size="20" onchange="location = this.value;" id="notifyDropdown" class="dropdown-contents">
           <?php echo $seen; ?>
-      </div>
+      </select>
     </div>
 
   </div>

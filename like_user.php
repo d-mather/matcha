@@ -30,7 +30,8 @@ try {
                 $sql = $conn->prepare('UPDATE `public` SET who_liked=? WHERE username=?');
                 $sql->execute([$who_liked, $liked]);
 
-                $notification = $user.' has just liked you!';
+                $notification = '<option value="http://localhost:8080/matcha/view_page_user.php?viewing='.$user.'">'.$user." has just liked you!</option>\n";
+                //$notification = $user.' has just liked you!';
                 $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen) VALUES (?, ?, 0)');
                 $notify->execute([$liked, $notification]);
 
@@ -55,7 +56,8 @@ try {
                 $sql = $conn->prepare('UPDATE `public` SET who_liked=? WHERE username=?');
                 $sql->execute([$who_liked, $liked]);
 
-                $notification = $user.' has just unliked you!';
+                $notification = '<option value="http://localhost:8080/matcha/view_page_user.php?viewing='.$user.'">'.$user." has just unliked you!</option>\n";
+                //$notification = $user.' has just unliked you!';
                 $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen) VALUES (?, ?, 0)');
                 $notify->execute([$liked, $notification]);
 

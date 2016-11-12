@@ -1,0 +1,4 @@
+PDOException: invalid data source name in /home/flip/lampstack/apache2/htdocs/matcha/chat_index.php:12
+Stack trace:
+#0 /home/flip/lampstack/apache2/htdocs/matcha/chat_index.php(12): PDO->__construct(';dbname=matcha', NULL, NULL)
+#1 {main}

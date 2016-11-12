@@ -15,7 +15,8 @@ try {
         die('error');
     }
 
-    $notification = 'New message from '.$sender.'!';
+    $notification = '<option value="http://localhost:8080/matcha/chat_index.php?chat_with='.$sender.'">New message from '.$sender."</option>\n";
+    //$notification = 'New message from '.$sender.'!';
     $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen) VALUES (?, ?, 0)');
     $notify->execute([$reciever, $notification]);
 

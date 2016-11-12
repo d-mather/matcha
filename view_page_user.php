@@ -4,7 +4,7 @@ include 'config/database.php';
 session_start();
 
 if ($_SESSION['logged_on_user'] == '' || !$_SESSION['logged_on_user']) {
-    return(header("LOCATION: index.php"));
+    return header('LOCATION: index.php');
 }
 
 try {
@@ -77,6 +77,25 @@ try {
             $v_pic_path_and_name5 = $result['pic_path_and_name'];
         }
     }
+    $sql = $conn->prepare('SELECT username, visited FROM `public`');
+    $sql->execute();
+    while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $login) {
+            $visited = $result['visited'];
+        }
+    }
+    $sql = $conn->prepare('SELECT username, notify, seen FROM `notifications`');
+    $sql->execute();
+    $seen = '';
+    while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $login && $result['seen'] == 1) {
+            if ($seen == '') {
+                $seen = $result['notify'];
+            } else {
+                $seen = $seen.'<br>'.$result['notify'];
+            }
+        }
+    }
 } catch (PDOException $e) {
     file_put_contents('error_log', $e);
 }
@@ -110,7 +129,46 @@ function goForward() {
 function goBack() {
   window.history.back();
 }
+function view_dropdown() {
+    document.getElementById("visitDropdown").classList.toggle("show");
+}
+function notify_dropdown() {
+    document.getElementById("notifyDropdown").classList.toggle("show");
+}
+function mark_read() {
+    document.getElementById("notifybtn").style.backgroundColor = "transparent";
+}
+
+setInterval(function() {
+if(typeof(EventSource) !== "undefined") {
+    var source = new EventSource("notify.php");
+    source.onmessage = function(event) {
+        document.getElementById("notifyDropdown").innerHTML += event.data + "<br>";
+        if (event.data) {
+            var notifybtn = document.getElementById("notifybtn");
+            notifybtn.style.backgroundColor = "#e8d1d0";
+        }
+    };
+} else {
+    document.getElementById("notifyDropdown").innerHTML = "Sorry, your browser does not support server-sent events...";
+}
+}, 5000);
 </script>
+
+<div class="dropdown">
+<button onclick="view_dropdown();" class="dropbtn">Visit History</button>
+<select size="10" onchange="location = this.value;" id="visitDropdown" class="dropdown-content">
+    <?php echo $visited; ?>
+</select>
+</div>
+
+<div class="dropdown">
+<button onclick="notify_dropdown(); mark_read();" id="notifybtn" class="dropbtns">Notifications</button>
+<select size="20" onchange="location = this.value;" id="notifyDropdown" class="dropdown-contents">
+    <?php echo $seen; ?>
+</select>
+</div>
+
 </div>
 </header>
 
@@ -118,7 +176,11 @@ function goBack() {
     <div id="viewer">
       <p style="line-height: 50px;">
         <u>Username:</u> &nbsp <?php echo $v_username; ?> <br />
-        <u>Activity:</u> &nbsp <?php if ($v_active == "online") echo $v_active; else echo "last seen on: " . $v_active; ?> <br />
+        <u>Activity:</u> &nbsp <?php if ($v_active == 'online') {
+    echo $v_active;
+} else {
+    echo 'last seen on: '.$v_active;
+} ?> <br />
         <u>Fame Rating:</u> &nbsp <?php echo $v_fame.' awesomness!'; ?> <br />
         <u>Full Name:</u> &nbsp <?php echo $v_fname.' '.$v_lname; ?> <br />
         <u>Age:</u> &nbsp <?php echo $v_age; ?> <br />
