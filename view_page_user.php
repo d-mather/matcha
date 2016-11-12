@@ -110,6 +110,7 @@ try {
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<link href="https://fonts.googleapis.com/css?family=Baloo+Bhai|Lalezar|Ruslan+Display" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Bungee+Inline|Chewy|Russo+One" rel="stylesheet">
+		<script type="text/javascript" src="script.js"></script>
 	  <link rel="stylesheet" href="css/modulr.css" />
 		<link rel="stylesheet" type="text/css" href="css/all_styles.css">
 	</head>
@@ -136,7 +137,16 @@ function notify_dropdown() {
     document.getElementById("notifyDropdown").classList.toggle("show");
 }
 function mark_read() {
-    document.getElementById("notifybtn").style.backgroundColor = "transparent";
+  var data = "?success=success";
+
+  ajax_post("mark_read.php", data, function(httpRequest) {
+      let response = JSON.parse(httpRequest.responseText);
+      if (response.status === true) {
+          document.getElementById("notifybtn").style.backgroundColor = "transparent";
+      } else {
+          displayError(response.statusMsg);
+      }
+  });
 }
 
 setInterval(function() {

@@ -92,7 +92,16 @@ try {
       document.getElementById("notifyDropdown").classList.toggle("show");
   }
   function mark_read() {
-      document.getElementById("notifybtn").style.backgroundColor = "transparent";
+    var data = "?success=success";
+
+    ajax_post("mark_read.php", data, function(httpRequest) {
+        let response = JSON.parse(httpRequest.responseText);
+        if (response.status === true) {
+            document.getElementById("notifybtn").style.backgroundColor = "transparent";
+        } else {
+            displayError(response.statusMsg);
+        }
+    });
   }
 
 setInterval(function() {
