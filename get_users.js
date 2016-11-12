@@ -82,6 +82,11 @@ function like_user(tmp) {
                         var temp = String("you unliked: " + user);
                         console.log(temp);
                     }
+                    if (response.connected == true) {
+                        document.getElementById(user + "_connected").style.display = "block";
+                    } else {
+                        document.getElementById(user + "_connected").style.display = "none";
+                    }
                 }
 
             });
@@ -214,17 +219,24 @@ httpRequest.addEventListener("readystatechange", function() {
                     mainD.style.backgroundColor = "rgba(112,163,1, 0.6)";
                 }
 
+                var div_pic = document.createElement("div");
+                div_pic.style.height = "180px";
+                div_pic.style.width = "180px";
+                div_pic.style.float = "left";
 
                 var pro_pic = document.createElement("img");
                 pro_pic.src = response.users_array[key]['pic_path_and_name'];
                 pro_pic.style.height = "180px";
                 pro_pic.style.width = "180px";
-                mainD.appendChild(pro_pic);
+                pro_pic.style.position = "relative";
+                div_pic.appendChild(pro_pic);
+
+                mainD.appendChild(div_pic);
 
                 var view_btn = document.createElement("button");
                 view_btn.innerHTML = "view";
                 view_btn.id = response.users_array[key]['username'] + "_viewbtn";
-                view_btn.style.height = "70px";
+                view_btn.style.height = "86px";
                 view_btn.style.width = "130px";
                 view_btn.style.float = "right";
                 if (response.users_array[key]['gender'] == 'male') {
@@ -252,7 +264,7 @@ httpRequest.addEventListener("readystatechange", function() {
                     like_btn.innerHTML = "like";
                 }
                 like_btn.id = response.users_array[key]['username'] + "_likebtn";
-                like_btn.style.height = "25px";
+                like_btn.style.height = "50px";
                 like_btn.style.width = "130px";
                 like_btn.style.float = "right";
                 if (response.users_array[key]['gender'] == 'male') {
@@ -276,22 +288,10 @@ httpRequest.addEventListener("readystatechange", function() {
                 }
                 mainD.appendChild(like_btn);
 
-                var text = document.createElement("div");
-                text.innerHTML = response.users_array[key]['fname'] + " " + response.users_array[key]['lname'] + ", " + response.users_array[key]['age'];
-                text.style.color = "black";
-                text.style.fontWeight = "bold";
-                mainD.appendChild(text);
-
-                var moretext = document.createElement("div");
-                var fame = Number(response.users_array[key]['likes']) + Number(response.users_array[key]['views']);
-                moretext.innerHTML = "likes: " + response.users_array[key]['likes'] + " | views: " + response.users_array[key]['views'] + "<br>Fame rating: " + fame;
-                moretext.style.color = "black";
-                mainD.appendChild(moretext);
-
                 var chat_btn = document.createElement("button");
                 chat_btn.innerHTML = "chat";
                 chat_btn.id = response.users_array[key]['username'] + "_chatbtn";
-                chat_btn.style.height = "25px";
+                chat_btn.style.height = "45px";
                 chat_btn.style.width = "130px";
                 chat_btn.style.float = "right";
                 if (response.users_array[key]['gender'] == 'male') {
@@ -312,10 +312,33 @@ httpRequest.addEventListener("readystatechange", function() {
                     chat_btn.disabled = true;
                 mainD.appendChild(chat_btn);
 
-                var br1 = document.createElement("br");
-                mainD.appendChild(br1);
-                var br2 = document.createElement("br");
-                mainD.appendChild(br2);
+                var connected = document.createElement("div");
+                connected.id = response.users_array[key]['username'] + "_connected";
+                connected.innerHTML = "Connected";
+                if (!response.users_array[key]['connected'].includes(response.logged_on_user))
+                    connected.style.display = "none";
+                else {
+                    connected.style.display = "block";
+                }
+                connected.style.width = "100%";
+                connected.style.textAlign = "center";
+                connected.style.fontWeight = "bold";
+                connected.style.fontSize = "20px";
+                connected.style.backgroundColor = "rgba(33, 24, 29, 0.7)";
+                connected.style.color = "#00ff9d";
+                mainD.appendChild(connected);
+
+                var text = document.createElement("div");
+                text.innerHTML = response.users_array[key]['fname'] + " " + response.users_array[key]['lname'] + ", " + response.users_array[key]['age'];
+                text.style.color = "black";
+                text.style.fontWeight = "bold";
+                mainD.appendChild(text);
+
+                var moretext = document.createElement("div");
+                var fame = Number(response.users_array[key]['likes']) + Number(response.users_array[key]['views']);
+                moretext.innerHTML = "likes: " + response.users_array[key]['likes'] + " | views: " + response.users_array[key]['views'] + "<br>Fame rating: " + fame;
+                moretext.style.color = "black";
+                mainD.appendChild(moretext);
 
                 var block_btn = document.createElement("button");
                 block_btn.id = response.users_array[key]['username'] + "_blockbtn";

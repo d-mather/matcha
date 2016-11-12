@@ -35,13 +35,14 @@ try {
             $v_interests = $result['interests'];
         }
     }
-    $sql = $conn->prepare('SELECT username, likes, views FROM `public`');
+    $sql = $conn->prepare('SELECT username, likes, views, connected FROM `public`');
     $sql->execute();
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
         if ($result['username'] == $v_username) {
             $v_likes = $result['likes'];
             $v_views = $result['views'];
             $v_fame = $v_likes + $v_views;
+            $v_connected = $result['connected'];
         }
     }
     $sql = $conn->prepare('SELECT username, fname, lname, active FROM `users`');
@@ -190,6 +191,11 @@ if(typeof(EventSource) !== "undefined") {
 <section id="container">
     <div id="viewer">
       <p style="line-height: 50px;">
+        <u> <?php if (strpos($v_connected, $login) !== false) {
+    echo 'CONNECTED';
+} else {
+    echo 'NOT CONNECTED';
+} ?> </u> <br />
         <u>Username:</u> &nbsp <?php echo $v_username; ?> <br />
         <u>Activity:</u> &nbsp <?php if ($v_active == 'online') {
     echo $v_active;
