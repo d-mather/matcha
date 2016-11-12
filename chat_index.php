@@ -16,7 +16,7 @@ try {
     $sql->execute();
     $seen = '';
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
-        if ($result['username'] == $login && $result['seen'] == 1) {
+        if ($result['username'] == $login) {
             if ($seen == '') {
                 $seen = $result['notify'];
             } else {
@@ -82,11 +82,16 @@ try {
           if(typeof(EventSource) !== "undefined") {
               var source = new EventSource("notify.php");
               source.onmessage = function(event) {
+                if (event.data == "\\") {
+                  var notifybtn = document.getElementById("notifybtn");
+                  notifybtn.style.backgroundColor = "#e8d1d0";
+                } else {
                   document.getElementById("notifyDropdown").innerHTML += event.data + "<br>";
                   if (event.data) {
                       var notifybtn = document.getElementById("notifybtn");
                       notifybtn.style.backgroundColor = "#e8d1d0";
                   }
+                }
               };
           } else {
               document.getElementById("notifyDropdown").innerHTML = "Sorry, your browser does not support server-sent events...";

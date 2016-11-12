@@ -1,4 +1,0 @@
-PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'matcha.notifications' doesn't exist in /home/flip/lampstack/apache2/htdocs/matcha/notify.php:16
-Stack trace:
-#0 /home/flip/lampstack/apache2/htdocs/matcha/notify.php(16): PDOStatement->execute()
-#1 {main}

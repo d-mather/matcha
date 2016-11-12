@@ -42,7 +42,7 @@ try {
 
     $notification = '<option value="http://localhost:8080/matcha/view_page_user.php?viewing='.$user.'">Your profile has just been viewed by '.$user."</option>\n";
   //  $notification = 'Your profile has just been viewed by '.$user.'!';
-    $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen) VALUES (?, ?, 0)');
+    $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen, printed) VALUES (?, ?, 0, 0)');
     $notify->execute([$viewed, $notification]);
 
     $response = array('status' => true);

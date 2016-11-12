@@ -32,7 +32,7 @@ try {
     $sql->execute();
     $seen = '';
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
-        if ($result['username'] == $login && $result['seen'] == 1) {
+        if ($result['username'] == $login) {
             if ($seen == '') {
                 $seen = $result['notify'];
             } else {
@@ -84,18 +84,32 @@ try {
           document.getElementById("notifyDropdown").classList.toggle("show");
       }
       function mark_read() {
-          document.getElementById("notifybtn").style.backgroundColor = "transparent";
+        var data = "?success=success";
+
+        ajax_post("mark_read.php", data, function(httpRequest) {
+            let response = JSON.parse(httpRequest.responseText);
+            if (response.status === true) {
+                document.getElementById("notifybtn").style.backgroundColor = "transparent";
+            } else {
+                displayError(response.statusMsg);
+            }
+        });
       }
 
 setInterval(function() {
       if(typeof(EventSource) !== "undefined") {
           var source = new EventSource("notify.php");
           source.onmessage = function(event) {
+            if (event.data == "\\") {
+              var notifybtn = document.getElementById("notifybtn");
+              notifybtn.style.backgroundColor = "#e8d1d0";
+            } else {
               document.getElementById("notifyDropdown").innerHTML += event.data + "<br>";
               if (event.data) {
                   var notifybtn = document.getElementById("notifybtn");
                   notifybtn.style.backgroundColor = "#e8d1d0";
               }
+            }
           };
       } else {
           document.getElementById("notifyDropdown").innerHTML = "Sorry, your browser does not support server-sent events...";

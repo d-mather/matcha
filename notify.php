@@ -12,14 +12,18 @@ try {
     $DB_DSN = $DB_DSN.';dbname=matcha';
     $conn = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = $conn->prepare('SELECT username, notify, seen FROM `notifications`');
+    $sql = $conn->prepare('SELECT username, notify, seen, printed FROM `notifications`');
     $sql->execute();
     while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
-        if ($result['username'] == $login && $result['seen'] == 0) {
-            $update = $conn->prepare('UPDATE `notifications` SET seen=1 WHERE username=?');
+        if ($result['username'] == $login && $result['seen'] == 0 && $result['printed'] == 0) {
+            $update = $conn->prepare('UPDATE `notifications` SET printed=1 WHERE username=?');
             $update->execute([$login]);
             $text = $result['notify'];
             echo 'data: '.$text."\n\n";
+            flush();
+        }
+        if ($result['username'] == $login && $result['seen'] == 0) {
+            echo "data: \\ \n\n";
             flush();
         }
     }
