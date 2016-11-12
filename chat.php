@@ -29,7 +29,7 @@ try {
         }
     }
 
-    $response = array('status' => false, 'statusMsg' => '<p class="warning">Sorry, ' . $chat_with . ' has not liked you back yet</p>');
+    $response = array('status' => false, 'statusMsg' => '<p class="warning">Sorry, '.$chat_with.' has not liked you back yet.<br>We will send you a notification when he/she does!</p>');
     die(json_encode($response));
 } catch (PDOException $e) {
     $response = array('status' => false, 'statusMsg' => '<p class="danger">Unfortunately there was an error: '.$e.'</p>');

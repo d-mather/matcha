@@ -104,7 +104,8 @@ setInterval(function() {
               var notifybtn = document.getElementById("notifybtn");
               notifybtn.style.backgroundColor = "#e8d1d0";
             } else {
-              document.getElementById("notifyDropdown").innerHTML += event.data + "<br>";
+              var ndd = document.getElementById("notifyDropdown");
+              ndd.innerHTML = event.data + "<br>" + ndd.innerHTML;
               if (event.data) {
                   var notifybtn = document.getElementById("notifybtn");
                   notifybtn.style.backgroundColor = "#e8d1d0";

@@ -5,6 +5,7 @@ session_start();
 $liked = $_POST['liked'];
 $user = $_SESSION['logged_on_user'];
 $status = $_POST['status'];
+$cont = 0;
 
 try {
     $DB_DSN = $DB_DSN.';dbname=matcha';
@@ -30,13 +31,8 @@ try {
                 $sql = $conn->prepare('UPDATE `public` SET who_liked=? WHERE username=?');
                 $sql->execute([$who_liked, $liked]);
 
-                $notification = '<option value="http://localhost:8080/matcha/view_page_user.php?viewing='.$user.'">'.$user." has just liked you!</option>\n";
-                //$notification = $user.' has just liked you!';
-                $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen, printed) VALUES (?, ?, 0, 0)');
-                $notify->execute([$liked, $notification]);
-
-                $response = array('status' => true);
-                die(json_encode($response));
+                $cont = 1;
+                break;
             } elseif ($status == 'unlike') {
                 $likes = $result['likes'];
                 $likes = $likes - 1;
@@ -64,6 +60,26 @@ try {
                 $response = array('status' => true);
                 die(json_encode($response));
             }
+        }
+    }
+
+    $sql = $conn->prepare('SELECT username, who_liked FROM `public`');
+    $sql->execute();
+    while ($result = $sql->fetch(PDO::FETCH_ASSOC)) {
+        if ($result['username'] == $user && $cont == 1) {
+            if (strpos($result['who_liked'], $liked) !== false) {
+                $notification = '<option value="http://localhost:8080/matcha/view_page_user.php?viewing='.$user.'">'.$user." has just liked you back!</option>\n";
+                //$notification = $user.' has just liked you back!';
+                $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen, printed) VALUES (?, ?, 0, 0)');
+                $notify->execute([$liked, $notification]);
+            } else {
+                $notification = '<option value="http://localhost:8080/matcha/view_page_user.php?viewing='.$user.'">'.$user." has just liked you!</option>\n";
+                //$notification = $user.' has just liked you!';
+                $notify = $conn->prepare('INSERT INTO notifications (username, notify, seen, printed) VALUES (?, ?, 0, 0)');
+                $notify->execute([$liked, $notification]);
+            }
+            $response = array('status' => true);
+            die(json_encode($response));
         }
     }
 } catch (PDOException $e) {
