@@ -225,8 +225,8 @@ setInterval(function() {
 
 <footer id="footer">
 
- <button onclick="document.getElementById('id01').style.display='block'"
- class="w3-btn">Options</button>
+ <button onmouseover="document.getElementById('id01').style.display='block'; window.scrollTo(0,document.body.scrollHeight);"
+ class="w3-btn">Open tray</button>
   <div id="id01" class="w3-modal" style="display: none">
    <div class="w3-modal-content">
 

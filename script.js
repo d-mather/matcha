@@ -1,5 +1,10 @@
 "use strict";
 
+var script = document.createElement('script');
+script.src = 'http://code.jquery.com/jquery-1.11.0.min.js';
+script.type = 'text/javascript';
+document.getElementsByTagName('head')[0].appendChild(script);
+
 // Timeout variables for error messages
 var addClass_timeout, removeError_timeout;
 
@@ -226,28 +231,14 @@ function profiles_form(form) {
     if (lat == "" || long == "") {
         var hidden = encodeURIComponent("yes");
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                    var lati = encodeURIComponent(position.coords.latitude);
-                    var longi = encodeURIComponent(position.coords.longitude);
-                    save_to_profile(lati, longi, hidden);
-                },
-                function(error) {
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            console.log("User denied the request for Geolocation.");
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            console.log("Location information is unavailable.");
-                            break;
-                        case error.TIMEOUT:
-                            console.log("The request to get user location timed out.");
-                            break;
-                        case error.UNKNOWN_ERROR:
-                            console.log("An unknown error occurred.");
-                            break;
-                    }
-                    save_to_profile("", "", hidden);
-                });
+            $.getJSON('http://ipinfo.io', function(data) {
+                console.log(data);
+                var coords = data.loc.split(',');
+                var lati = encodeURIComponent(coords[0]);
+                var longi = encodeURIComponent(coords[1]);
+                save_to_profile(lati, longi, hidden);
+
+            });
         } else {
             save_to_profile("", "", hidden);
         }

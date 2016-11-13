@@ -7,6 +7,24 @@ if ($_SESSION['logged_on_user'] == '' || !$_SESSION['logged_on_user']) {
     return header('LOCATION: index.php');
 }
 
+function calc_distance($lat1, $lon1, $lat2, $lon2, $unit)
+{
+    $theta = $lon1 - $lon2;
+    $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+    $dist = acos($dist);
+    $dist = rad2deg($dist);
+    $miles = $dist * 60 * 1.1515;
+    $unit = strtoupper($unit);
+
+    if ($unit == 'K') {
+        return $miles * 1.609344;
+    } elseif ($unit == 'N') {
+        return $miles * 0.8684;
+    } else {
+        return $miles;
+    }
+}
+
 try {
     $login = $_SESSION['logged_on_user'];
     $v_username = $_GET['viewing'];
@@ -33,6 +51,10 @@ try {
             $v_latitude = $result['latitude'];
             $v_longitude = $result['longitude'];
             $v_interests = $result['interests'];
+        }
+        if ($result['username'] == $login) {
+            $u_latitude = $result['latitude'];
+            $u_longitude = $result['longitude'];
         }
     }
     $sql = $conn->prepare('SELECT username, likes, views, connected FROM `public`');
@@ -105,6 +127,7 @@ try {
 
 <html>
 	<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
 		<title>Matcha</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -210,6 +233,7 @@ if(typeof(EventSource) !== "undefined") {
         <u>Biography:</u> <br /> <?php echo $v_biography; ?> <br />
         <u>Interests:</u> <br /><size style="max-width: 20%;"> <?php echo $v_interests; ?></size> <br />
         <u>Location:</u><br />
+        <?php echo round(calc_distance($v_latitude, $v_longitude, $u_latitude, $u_longitude, 'K'), 2).' Kilometers away!'; ?><br />
         latitude coords: <br /> <?php if ($v_latitude) {
     echo $v_latitude;
 } else {
@@ -243,8 +267,8 @@ if(typeof(EventSource) !== "undefined") {
 
 <footer id="footer">
 
- <button onclick="document.getElementById('id01').style.display='block'"
- class="w3-btn">Options</button>
+ <button onmouseover="document.getElementById('id01').style.display='block'; window.scrollTo(0,document.body.scrollHeight);"
+ class="w3-btn">Open tray</button>
   <div id="id01" class="w3-modal" style="display: none">
    <div class="w3-modal-content">
 
