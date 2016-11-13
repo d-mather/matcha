@@ -232,7 +232,6 @@ function profiles_form(form) {
         var hidden = encodeURIComponent("yes");
         if (navigator.geolocation) {
             $.getJSON('http://ipinfo.io', function(data) {
-                console.log(data);
                 var coords = data.loc.split(',');
                 var lati = encodeURIComponent(coords[0]);
                 var longi = encodeURIComponent(coords[1]);
