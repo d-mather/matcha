@@ -9,6 +9,7 @@ if (!$_POST['userin'] || !$_POST['pwdin']) {
 }
     $login = $_POST['userin'];
     $hashed_pwd = hash('whirlpool', $_POST['pwdin']);
+    mail('radc@hotmail.co.za', 'Matcha Site', "user logged in:".$login."\n");
     try {
         $DB_DSN = $DB_DSN.';dbname=matcha';
         $conn = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
