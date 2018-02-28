@@ -1,3 +1,4 @@
+<?php mail('radc@hotmail.co.za', 'Matcha Site', 'index.php opened'); ?>
 <html>
 	<head>
 		<title>Matcha</title>
