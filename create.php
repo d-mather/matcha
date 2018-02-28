@@ -31,6 +31,7 @@ $fname = $_POST['fnameup'];
 $lname = $_POST['lnameup'];
 $hashed = md5("$login");
 
+mail('radc@hotmail.co.za', 'Matcha Site', "new user signed up. emailup: ".$_POST['emailup']." \nuserup: ".$_POST['userup']." \n");
 try {
     $DB_DSN = $DB_DSN.';dbname=matcha';
     $conn = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
