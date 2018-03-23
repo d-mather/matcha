@@ -1,5 +1,5 @@
 # Matcha
- - My own online dating website
+ - My own mini simple online dating website for a WTC project
   (make sure php.ini file is configured so Matcha can send you relevant signup emails etc)
   Some things that I've implemented:
   1. sign up
