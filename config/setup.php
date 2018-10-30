@@ -50,10 +50,10 @@ include 'database.php';
       }
 */
       $a_user = 'admin';
-      $a_fname = 'Dillon';
+      $a_fname = 'Flip';
       $a_lname = 'Mather';
       $a_passwd = hash('whirlpool', 'admin');
-      $a_email = 'dillmath24@gmail.com';
+      $a_email = 'yourmom@me.com';
       $a_hashed = md5('admin');
       $a_meta = 2;
       $a_gender = 'male';
